@@ -1308,7 +1308,8 @@
             font-size: 0.78em;
             color: var(--text-light);
             text-align: right;
-            min-width: 56px;
+            min-width: 68px;
+            white-space: nowrap;
         }
 
         .fix-group {
@@ -2252,8 +2253,16 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('appContainer').classList.remove('hidden');
             document.getElementById('mainNav').classList.remove('hidden');
-            document.getElementById('userInfo').innerHTML = '<strong>' + esc(currentUser) + '</strong> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>';
-            if (isAdmin) document.getElementById('nav-admin').classList.remove('hidden');
+            document.getElementById('userInfo').innerHTML =
+                `<strong>${esc(currentUser)}</strong> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>`;
+
+            if (isAdmin) {
+                document.getElementById('nav-admin').classList.remove('hidden');
+            }
+
+            const showInsights = isAdmin || isDeadlinePassed();
+            document.getElementById('nav-insights').classList.toggle('hidden', !showInsights);
+
             showPage('home');
             startApiPollIfEnabled();
         }
@@ -2263,22 +2272,46 @@
         // ============================================================
         let currentPage = 'leaderboard';
         function showPage(page) {
+            if (page === 'insights' && !isAdmin && !isDeadlinePassed()) {
+                page = 'home';
+            }
+
             ['home', 'leaderboard', 'mypicks', 'allteams', 'results', 'fixtures', 'insights', 'admin'].forEach(p => {
-                document.getElementById(p + 'Page').classList.add('hidden');
-                document.getElementById('nav-' + p) && document.getElementById('nav-' + p).classList.remove('active');
+                const pageEl = document.getElementById(p + 'Page');
+                const navEl = document.getElementById('nav-' + p);
+
+                if (pageEl) pageEl.classList.add('hidden');
+                if (navEl) navEl.classList.remove('active');
             });
+
             document.getElementById(page + 'Page').classList.remove('hidden');
-            document.getElementById('nav-' + page) && document.getElementById('nav-' + page).classList.add('active');
+
+            const activeNav = document.getElementById('nav-' + page);
+            if (activeNav) activeNav.classList.add('active');
+
             currentPage = page;
-            // Reset temp picks only when navigating TO the picks page, not on background refreshes
+
             if (page === 'mypicks') {
                 tempPicks = { ...(appData.picks[slugify(currentUser)] || {}) };
             }
+
             renderPage(page);
         }
 
         function refreshCurrentPage() {
-            if (currentPage) renderPage(currentPage);
+            const showInsights = isAdmin || isDeadlinePassed();
+            const navInsights = document.getElementById('nav-insights');
+            if (navInsights) {
+                navInsights.classList.toggle('hidden', !showInsights);
+            }
+
+            if (currentPage) {
+                if (currentPage === 'insights' && !showInsights) {
+                    showPage('home');
+                    return;
+                }
+                renderPage(currentPage);
+            }
         }
 
         function renderPage(page) {
@@ -3030,24 +3063,26 @@
 
         function renderFixturesFromData() {
             if (!fixtureData) return;
+
             const myTeams = getMyTeams();
 
-            // Filter events
             let events = fixtureData;
             if (fixtureFilter === 'mine') {
                 events = events.filter(e => {
-                    const comp = e.competitions[0];
-                    return comp.competitors.some(c => myTeams.includes(c.team.displayName.toLowerCase()));
+                    const comp = e.competitions?.[0];
+                    return comp && comp.competitors.some(c =>
+                        myTeams.includes((c.team.displayName || '').toLowerCase())
+                    );
                 });
             }
 
             if (!events.length) {
-                document.getElementById('fixturesList').innerHTML = '<div class="alert alert-info">No fixtures found for your picked teams yet.</div>';
+                document.getElementById('fixturesList').innerHTML =
+                    '<div class="alert alert-info">No fixtures found for your picked teams yet.</div>';
                 renderGroupStandings(myTeams);
                 return;
             }
 
-            // Group by date
             const byDay = {};
             events.forEach(e => {
                 const day = e.date.slice(0, 10);
@@ -3056,35 +3091,65 @@
             });
 
             const html = Object.entries(byDay).map(([day, dayEvents]) => {
-                const label = new Date(day + 'T12:00:00Z').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                const label = new Date(day + 'T12:00:00Z').toLocaleDateString('en-GB', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
                 const rows = dayEvents.map(e => {
-                    const comp = e.competitions[0];
-                    const home = comp.competitors.find(c => c.homeAway === 'home');
-                    const away = comp.competitors.find(c => c.homeAway === 'away');
+                    const comp = e.competitions?.[0];
+                    const home = comp?.competitors?.find(c => c.homeAway === 'home');
+                    const away = comp?.competitors?.find(c => c.homeAway === 'away');
                     if (!home || !away) return '';
+
                     const hName = home.team.displayName;
                     const aName = away.team.displayName;
                     const isMyH = myTeams.includes(hName.toLowerCase());
                     const isMyA = myTeams.includes(aName.toLowerCase());
                     const isMyMatch = isMyH || isMyA;
-                    const status = comp.status.type;
+
+                    const status = comp.status?.type || {};
                     const isLive = status.state === 'in';
-                    const isFt = status.completed;
-                    const score = isFt || isLive
-                        ? `${home.score ?? '–'} – ${away.score ?? '–'}`
-                        : new Date(e.date).toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Dublin' })
+                    const isFt = !!status.completed;
+
+                    const score = `${home.score ?? ''}${(isFt || isLive) ? '-' : 'vs'}${away.score ?? ''}`;
                     const grp = teamGroup(hName) || teamGroup(aName);
-                    const rowClass = ['fixture-row', isMyMatch ? 'my-team' : '', isLive ? 'live' : '', isFt ? 'ft' : ''].filter(Boolean).join(' ');
+
+                    const koTime = new Date(e.date).toLocaleTimeString('en-IE', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                        timeZone: 'Europe/Dublin'
+                    });
+
+                    const timeLabel = isFt
+                        ? 'FT'
+                        : isLive
+                            ? '<span class="fix-status-live">LIVE</span>'
+                            : `KO ${koTime}`;
+
+                    const rowClass = [
+                        'fixture-row',
+                        isMyMatch ? 'my-team' : '',
+                        isLive ? 'live' : '',
+                        isFt ? 'ft' : ''
+                    ].filter(Boolean).join(' ');
+
                     const scoreClass = isLive ? 'fix-score live-score' : 'fix-score';
-                    const timeLabel = isFt ? 'FT' : isLive ? `<span class="fix-status-live">● LIVE</span>` : new Date(e.date).toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Dublin' });
-                    return `<div class="${rowClass}">
-                <div class="fix-home">${isMyH ? '<strong>' : ''}${countryFlag(hName)} ${esc(hName)}${isMyH ? '</strong>' : ''}</div>
-                <div class="${scoreClass}">${isFt || isLive ? score : 'vs'}</div>
-                <div class="fix-away">${isMyA ? '<strong>' : ''}${esc(aName)} ${countryFlag(aName)}${isMyA ? '</strong>' : ''}</div>
-                <div class="fix-time">${timeLabel}</div>
-                ${grp ? `<div class="fix-group">Grp ${grp}</div>` : '<div></div>'}
-            </div>`;
+
+                    return `
+                <div class="${rowClass}">
+                    <div class="fix-home">${isMyH ? '<strong>' : ''}${countryFlag(hName)} ${esc(hName)}${isMyH ? '</strong>' : ''}</div>
+                    <div class="${scoreClass}">${isFt || isLive ? score : 'vs'}</div>
+                    <div class="fix-away">${isMyA ? '<strong>' : ''}${esc(aName)} ${countryFlag(aName)}${isMyA ? '</strong>' : ''}</div>
+                    <div class="fix-time">${timeLabel}</div>
+                    ${grp ? `<div class="fix-group">Grp ${grp}</div>` : '<div></div>'}
+                </div>
+            `;
                 }).join('');
+
                 return `<div class="fixture-day"><div class="fixture-day-header">${label}</div>${rows}</div>`;
             }).join('');
 
@@ -3350,22 +3415,87 @@
         }
 
         function countryFlag(name) {
+            const key = String(name || '')
+                .trim()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '');
+
             const flags = {
-                'brazil': '🇧🇷', 'argentina': '🇦🇷', 'france': '🇫🇷', 'england': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'spain': '🇪🇸', 'germany': '🇩🇪',
-                'netherlands': '🇳🇱', 'portugal': '🇵🇹', 'belgium': '🇧🇪', 'denmark': '🇩🇰', 'croatia': '🇭🇷', 'uruguay': '🇺🇾',
-                'serbia': '🇷🇸', 'senegal': '🇸🇳', 'switzerland': '🇨🇭', 'usa': '🇺🇸', 'mexico': '🇲🇽', 'poland': '🇵🇱',
-                'canada': '🇨🇦', 'wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'ecuador': '🇪🇨', 'morocco': '🇲🇦', 'japan': '🇯🇵', 'south korea': '🇰🇷',
-                'cameroon': '🇨🇲', 'qatar': '🇶🇦', 'ghana': '🇬🇭', 'australia': '🇦🇺', 'iran': '🇮🇷', 'tunisia': '🇹🇳',
-                'saudi arabia': '🇸🇦', 'costa rica': '🇨🇷', 'colombia': '🇨🇴', 'chile': '🇨🇱', 'peru': '🇵🇪',
-                'nigeria': '🇳🇬', 'egypt': '🇪🇬', 'ivory coast': '🇨🇮', "côte d'ivoire": '🇨🇮', 'turkey': '🇹🇷',
-                'austria': '🇦🇹', 'ukraine': '🇺🇦', 'russia': '🇷🇺', 'sweden': '🇸🇪', 'norway': '🇳🇴',
-                'scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', 'ireland': '🇮🇪', 'new zealand': '🇳🇿', 'venezuela': '🇻🇪', 'bolivia': '🇧🇴',
-                'paraguay': '🇵🇾', 'algeria': '🇩🇿', 'mali': '🇲🇱', 'kenya': '🇰🇪', 'honduras': '🇭🇳', 'panama': '🇵🇦',
-                'türkiye': '🇹🇷', 'czechia': '🇨🇿', 'czech republic': '🇨🇿', 'haiti': '🇭🇹', 'jordan': '🇯🇴',
-                'united states': '🇺🇸', 'south africa': '🇿🇦', 'bosnia-herzegovina': '🇧🇦', 'iraq': '🇮🇶',
-                'uzbekistan': '🇺🇿', 'curacao': '🇨🇼', 'congo dr': '🇨🇩', 'dr congo': '🇨🇩', 'cape verde': '🇨🇻',
+                'brazil': '🇧🇷',
+                'argentina': '🇦🇷',
+                'france': '🇫🇷',
+                'england': '🏴',
+                'spain': '🇪🇸',
+                'germany': '🇩🇪',
+                'netherlands': '🇳🇱',
+                'portugal': '🇵🇹',
+                'belgium': '🇧🇪',
+                'denmark': '🇩🇰',
+                'croatia': '🇭🇷',
+                'uruguay': '🇺🇾',
+                'serbia': '🇷🇸',
+                'senegal': '🇸🇳',
+                'switzerland': '🇨🇭',
+                'usa': '🇺🇸',
+                'mexico': '🇲🇽',
+                'poland': '🇵🇱',
+                'canada': '🇨🇦',
+                'wales': '🏴',
+                'ecuador': '🇪🇨',
+                'morocco': '🇲🇦',
+                'japan': '🇯🇵',
+                'south korea': '🇰🇷',
+                'cameroon': '🇨🇲',
+                'qatar': '🇶🇦',
+                'ghana': '🇬🇭',
+                'australia': '🇦🇺',
+                'iran': '🇮🇷',
+                'tunisia': '🇹🇳',
+                'saudi arabia': '🇸🇦',
+                'costa rica': '🇨🇷',
+                'colombia': '🇨🇴',
+                'chile': '🇨🇱',
+                'peru': '🇵🇪',
+                'nigeria': '🇳🇬',
+                'egypt': '🇪🇬',
+                'ivory coast': '🇨🇮',
+                "cote d'ivoire": '🇨🇮',
+                'turkey': '🇹🇷',
+                'turkiye': '🇹🇷',
+                'austria': '🇦🇹',
+                'ukraine': '🇺🇦',
+                'russia': '🇷🇺',
+                'sweden': '🇸🇪',
+                'norway': '🇳🇴',
+                'scotland': '🏴',
+                'ireland': '🇮🇪',
+                'new zealand': '🇳🇿',
+                'venezuela': '🇻🇪',
+                'bolivia': '🇧🇴',
+                'paraguay': '🇵🇾',
+                'algeria': '🇩🇿',
+                'mali': '🇲🇱',
+                'kenya': '🇰🇪',
+                'honduras': '🇭🇳',
+                'panama': '🇵🇦',
+                'czechia': '🇨🇿',
+                'czech republic': '🇨🇿',
+                'haiti': '🇭🇹',
+                'jordan': '🇯🇴',
+                'united states': '🇺🇸',
+                'south africa': '🇿🇦',
+                'bosnia-herzegovina': '🇧🇦',
+                'bosnia and herzegovina': '🇧🇦',
+                'iraq': '🇮🇶',
+                'uzbekistan': '🇺🇿',
+                'curacao': '🇨🇼',
+                'congo dr': '🇨🇩',
+                'dr congo': '🇨🇩',
+                'cape verde': '🇨🇻'
             };
-            return flags[name.toLowerCase()] || '🏳️';
+
+            return flags[key] || '🏳️';
         }
     </script>
 </body>
