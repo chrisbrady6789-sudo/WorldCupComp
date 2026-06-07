@@ -1460,7 +1460,7 @@
     <!-- Header -->
     <div class="header" id="mainHeader" style="display:none">
         <h1>&#x26BD; World Cup 2026</h1>
-        <div class="subtitle">Pick your 8 teams &mdash; one from each bracket</div>
+        <li>Pick <strong>1 team from each of the 12 brackets</strong></li>
         <div id="deadlineBanner"></div>
         <div class="user-info" id="userInfo"></div>
     </div>
@@ -1530,8 +1530,9 @@
             <div class="rules-box" style="margin-top:20px;">
                 <h3>How it works</h3>
                 <ul style="margin-left:20px;line-height:1.8;">
-                    <li>Pick <strong>1 team from each of the 8 brackets</strong></li>
-                    <li>Earn points every time your team wins or draws</li>
+                    <li>Pick <strong>1 team from each of the 12 brackets</strong></li>
+                    <li>Earn points every time your team wins, draws, or scores goals</li>
+                    <li>Pick a <strong>Top Goalscorer</strong> tiebreaker worth 15 bonus points</li>
                     <li>Points increase in the knockout rounds</li>
                     <li>Highest total wins!</li>
                 </ul>
@@ -1551,10 +1552,13 @@
                 <div class="rules-box" style="margin-bottom:24px">
                     <h3>📋 How It Works</h3>
                     <ul style="margin-left:20px;line-height:2">
-                        <li>You are assigned <strong>8 brackets</strong>, each containing 4 teams</li>
+                        <li>You are assigned <strong>12 brackets</strong>, each containing 4 teams</li>
                         <li>Pick <strong>1 team from each bracket</strong> before the deadline</li>
-                        <li>Earn points every time your team <strong>wins or draws</strong> in the tournament</li>
+                        <li>Earn points every time your team <strong>wins, draws, or scores goals</strong> in the
+                            tournament</li>
                         <li>Points are worth more in later rounds — it pays to have a good team go deep!</li>
+                        <li>Pick a <strong>Top Goalscorer</strong> as a tiebreaker, also worth <strong>15 bonus
+                                points</strong></li>
                         <li>The player with the <strong>highest total at the end wins</strong> 🏆</li>
                         <li>Picks are <strong>hidden from other players</strong> until the deadline passes — so no
                             copying!</li>
@@ -1566,44 +1570,58 @@
                     <div class="scoring-grid">
                         <div class="scoring-card">
                             <div class="stage">Group Win</div>
-                            <div class="pts">2</div>
+                            <div class="pts">4</div>
                             <div class="pts-label">pts</div>
                         </div>
                         <div class="scoring-card">
                             <div class="stage">Group Draw</div>
+                            <div class="pts">2</div>
+                            <div class="pts-label">pts</div>
+                        </div>
+                        <div class="scoring-card">
+                            <div class="stage">Goal Scored</div>
                             <div class="pts">1</div>
-                            <div class="pts-label">pt</div>
+                            <div class="pts-label">pt / goal</div>
                         </div>
                         <div class="scoring-card">
                             <div class="stage">Last 16</div>
-                            <div class="pts">5</div>
-                            <div class="pts-label">pts / win</div>
-                        </div>
-                        <div class="scoring-card">
-                            <div class="stage">Quarter Final</div>
-                            <div class="pts">8</div>
-                            <div class="pts-label">pts / win</div>
-                        </div>
-                        <div class="scoring-card">
-                            <div class="stage">Semi Final</div>
                             <div class="pts">10</div>
                             <div class="pts-label">pts / win</div>
                         </div>
                         <div class="scoring-card">
-                            <div class="stage">Final</div>
+                            <div class="stage">Quarter Final</div>
+                            <div class="pts">16</div>
+                            <div class="pts-label">pts / win</div>
+                        </div>
+                        <div class="scoring-card">
+                            <div class="stage">Semi Final</div>
                             <div class="pts">20</div>
                             <div class="pts-label">pts / win</div>
                         </div>
+                        <div class="scoring-card">
+                            <div class="stage">Final</div>
+                            <div class="pts">40</div>
+                            <div class="pts-label">pts / win</div>
+                        </div>
+                        <div class="scoring-card">
+                            <div class="stage">Top Goalscorer</div>
+                            <div class="pts">15</div>
+                            <div class="pts-label">pts bonus</div>
+                        </div>
                     </div>
-                    <p style="color:#64748b;font-size:0.88em;margin-top:10px">⚠️ Knockout rounds (Last 16 onwards) have
-                        no draws — the winner goes through.</p>
+                    <p style="color:#64748b;font-size:0.88em;margin-top:10px">
+                        ⚠️ Knockout rounds (Last 16 onwards) have no draws — the winner goes through. Teams also earn 1
+                        point for every goal scored.
+                    </p>
                 </div>
 
                 <div class="rules-box">
                     <h3>💡 Example</h3>
-                    <p style="line-height:1.8">If you picked <strong>Brazil</strong> and they win 3 group games (+6
-                        pts), then win the Last 16 (+5 pts) and Quarter Final (+8 pts) — that's already <strong>19
-                            points</strong> from one team alone. Pick wisely!</p>
+                    <p style="line-height:1.8">
+                        If you picked <strong>Brazil</strong> and they win 3 group games (+12 pts), score 7 goals across
+                        those matches (+7 pts), then win the Last 16 (+10 pts) and Quarter Final (+16 pts) — that's
+                        already <strong>45 points</strong> from one team alone. Pick wisely!
+                    </p>
                 </div>
 
                 <div style="text-align:center;margin-top:28px">
@@ -1647,43 +1665,64 @@
                 <div id="picksMsg"></div>
 
                 <div class="rules-box" style="margin-bottom:20px">
-                    <h3>Points Scoring</h3>
+                    <h3>🏅 Points Scoring</h3>
                     <div class="scoring-grid">
                         <div class="scoring-card">
                             <div class="stage">Group Win</div>
-                            <div class="pts">2</div>
+                            <div class="pts">4</div>
                             <div class="pts-label">pts</div>
                         </div>
                         <div class="scoring-card">
                             <div class="stage">Group Draw</div>
+                            <div class="pts">2</div>
+                            <div class="pts-label">pts</div>
+                        </div>
+                        <div class="scoring-card">
+                            <div class="stage">Goal Scored</div>
                             <div class="pts">1</div>
-                            <div class="pts-label">pt</div>
+                            <div class="pts-label">pt / goal</div>
                         </div>
                         <div class="scoring-card">
                             <div class="stage">Last 16</div>
-                            <div class="pts">5</div>
-                            <div class="pts-label">pts / win</div>
-                        </div>
-                        <div class="scoring-card">
-                            <div class="stage">Quarter Final</div>
-                            <div class="pts">8</div>
-                            <div class="pts-label">pts / win</div>
-                        </div>
-                        <div class="scoring-card">
-                            <div class="stage">Semi Final</div>
                             <div class="pts">10</div>
                             <div class="pts-label">pts / win</div>
                         </div>
                         <div class="scoring-card">
-                            <div class="stage">Final</div>
+                            <div class="stage">Quarter Final</div>
+                            <div class="pts">16</div>
+                            <div class="pts-label">pts / win</div>
+                        </div>
+                        <div class="scoring-card">
+                            <div class="stage">Semi Final</div>
                             <div class="pts">20</div>
                             <div class="pts-label">pts / win</div>
                         </div>
+                        <div class="scoring-card">
+                            <div class="stage">Final</div>
+                            <div class="pts">40</div>
+                            <div class="pts-label">pts / win</div>
+                        </div>
+                        <div class="scoring-card">
+                            <div class="stage">Top Goalscorer</div>
+                            <div class="pts">15</div>
+                            <div class="pts-label">pts bonus</div>
+                        </div>
                     </div>
+                    <p style="color:#64748b;font-size:0.88em;margin-top:10px">
+                        ⚠️ Knockout rounds (Last 16 onwards) have no draws — the winner goes through. Teams also earn 1
+                        point for every goal scored.
+                    </p>
                 </div>
 
-                <div id="pickCount" class="pick-count">Select 1 team from each bracket (0 / 8)</div>
+                <div id="pickCount" class="pick-count">Select 1 team from each bracket (0 / 12)</div>
                 <div id="bracketPicker"></div>
+                <div class="form-group" style="margin-top:20px">
+                    <label for="topGoalscorerPick">Top Goalscorer Tiebreaker</label>
+                    <select id="topGoalscorerPick"></select>
+                    <small style="display:block;margin-top:6px;color:#666">
+                        Used as the tiebreaker. Also worth 15 points if correct.
+                    </small>
+                </div>
                 <div id="submitPicksArea" class="hidden" style="margin-top:20px;text-align:center">
                     <button class="btn btn-gold" onclick="submitPicks()" style="font-size:1.1em;padding:15px 40px">Save
                         My Picks</button>
@@ -1740,7 +1779,15 @@
                             API-Football is enabled, manual entries override fetched results.</p>
                     </div>
                     <div class="form-group"
-                        style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:8px;align-items:end">
+                        style="display:grid;grid-template-columns:1fr 70px 1fr 70px 1fr 1fr auto;gap:8px;align-items:end">
+                        <div>
+                            <label>Home Goals</label>
+                            <input type="number" id="matchScoreA" min="0" placeholder="0">
+                        </div>
+                        <div>
+                            <label>Away Goals</label>
+                            <input type="number" id="matchScoreB" min="0" placeholder="0">
+                        </div>
                         <div>
                             <label>Home Team</label>
                             <input type="text" id="matchTeamA" placeholder="e.g. Brazil" list="teamsList">
@@ -1832,6 +1879,11 @@
                     <div class="form-group">
                         <label>New Admin Password</label>
                         <input type="password" id="settingAdminPw" placeholder="Leave blank to keep current">
+                    </div>
+                    <div class="form-group">
+                        <label>Winning Top Goalscorer</label>
+                        <select id="settingTopGoalscorerWinner"></select>
+                        <small style="color:#666">Set this once the tournament top scorer is confirmed.</small>
                     </div>
                     <button class="btn btn-gold" onclick="saveSettings()">Save Settings</button>
                     <div id="settingsSaveMsg" style="margin-top:10px"></div>
@@ -1996,22 +2048,226 @@
         // ============================================================
         // APP STATE
         // ============================================================
+
+        const ROUND_LABELS = {
+            group: 'Group Stage',
+            r16: 'Last 16',
+            qf: 'Quarter Final',
+            sf: 'Semi Final',
+            final: 'Final'
+        };
+
+        const ROUND_POINTS = {
+            group: { win: 4, draw: 2, goal: 1 },
+            r16: { win: 10, goal: 1 },
+            qf: { win: 16, goal: 1 },
+            sf: { win: 20, goal: 1 },
+            final: { win: 40, goal: 1 }
+        };
+
+        const ROUND_CLASS = {
+            group: 'round-group',
+            r16: 'round-r16',
+            qf: 'round-qf',
+            sf: 'round-sf',
+            final: 'round-final'
+        };
+
+        const NUM_BRACKETS = 12;
+        const TOP_SCORER_BONUS = 15;
+
+        const DEFAULT_BRACKETS = {
+            A: { name: 'Bracket A', teams: ['France', 'Spain', 'England', 'Brazil'] },
+            B: { name: 'Bracket B', teams: ['Portugal', 'Argentina', 'Germany', 'Netherlands'] },
+            C: { name: 'Bracket C', teams: ['Belgium', 'Norway', 'Colombia', 'Japan'] },
+            D: { name: 'Bracket D', teams: ['USA', 'Mexico', 'Uruguay', 'Morocco'] },
+            E: { name: 'Bracket E', teams: ['Türkiye', 'Croatia', 'Switzerland', 'Austria'] },
+            F: { name: 'Bracket F', teams: ['Ecuador', 'Senegal', 'Canada', 'Ivory Coast'] },
+            G: { name: 'Bracket G', teams: ['Scotland', 'Sweden', 'Paraguay', 'Algeria'] },
+            H: { name: 'Bracket H', teams: ['Bosnia & Herzegovina', 'Egypt', 'Australia', 'Cape Verde'] },
+            I: { name: 'Bracket I', teams: ['Curacao', 'DR Congo', 'Haiti', 'Iran'] },
+            J: { name: 'Bracket J', teams: ['Iraq', 'Jordan', 'New Zealand', 'Panama'] },
+            K: { name: 'Bracket K', teams: ['Qatar', 'Saudi Arabia', 'South Africa', 'Tunisia'] },
+            L: { name: 'Bracket L', teams: ['Uzbekistan', 'Ghana', 'Czechia', 'South Korea'] }
+        };
+
+        const TOP_GOALSCORERS = [
+            'Kylian Mbappe (France)',
+            'Harry Kane (England)',
+            'Mikel Oyarzabal (Spain)',
+            'Erling Haaland (Norway)',
+            'Lionel Messi (Argentina)',
+            'Lamine Yamal (Spain)',
+            'Cristiano Ronaldo (Portugal)',
+            'Julian Alvarez (Argentina)',
+            'Vinicius Junior (Brazil)',
+            'Ousmane Dembele (France)',
+            'Lautaro Martinez (Argentina)',
+            'Raphinha (Brazil)',
+            'Igor Thiago (Brazil)',
+            'Kai Havertz (Germany)',
+            'Romelu Lukaku (Belgium)',
+            'Cody Gakpo (Netherlands)',
+            'Ferran Torres (Spain)',
+            'Florian Wirtz (Germany)',
+            'Nick Woltemade (Germany)',
+            'Charles De Ketelaere (Belgium)',
+            'Michael Olise (France)',
+            'Luis Javier Suarez (Colombia)',
+            'Matheus Cunha (Brazil)',
+            'Luis Diaz (Colombia)',
+            'Jamal Musiala (Germany)',
+            'Ollie Watkins (England)',
+            'Bukayo Saka (England)',
+            'Jonathan David (Canada)',
+            'Bruno Fernandes (Portugal)',
+            'Memphis Depay (Netherlands)',
+            'Jude Bellingham (England)',
+            'Desire Doue (France)',
+            'Neymar Jr (Brazil)',
+            'Brian Brobbey (Netherlands)',
+            'Jeremy Doku (Belgium)',
+            'Darwin Nunez (Uruguay)',
+            'Marcus Thuram (France)',
+            'Enner Valencia (Ecuador)',
+            'Eberechi Eze (England)',
+            'Donyell Malen (Netherlands)',
+            'Leroy Sane (Germany)',
+            'Pedro Neto (Portugal)',
+            'Deniz Undav (Germany)',
+            'Sadio Mane (Senegal)',
+            'Breel Embolo (Switzerland)',
+            'Christian Pulisic (United States)',
+            'Rafael Leao (Portugal)',
+            'Alexander Sorloth (Norway)',
+            'Goncalo Ramos (Portugal)',
+            'Anthony Gordon (England)',
+            'Bradley Barcola (France)',
+            'Viktor Gyokeres (Sweden)',
+            'Alexander Isak (Sweden)',
+            'Ante Budimir (Croatia)',
+            'John Yeboah (Ecuador)',
+            'Endrick (Brazil)',
+            'Thiago Almada (Argentina)',
+            'Mohamed Salah (Egypt)',
+            'Dani Olmo (Spain)',
+            'Marcus Rashford (England)',
+            'Morgan Rogers (England)',
+            'Ivan Toney (England)',
+            'Folarin Balogun (United States)',
+            'Ayase Ueda (Japan)',
+            'Federico Valverde (Uruguay)',
+            'Armando Gonzalez (Mexico)',
+            'Gabriel Martinelli (Brazil)',
+            'Haji Wright (United States)',
+            'James Rodriguez (Colombia)',
+            'Leandro Trossard (Belgium)',
+            'Nico Williams (Spain)',
+            'Nicolas Jackson (Senegal)',
+            'Noa Lang (Netherlands)',
+            'Omar Marmoush (Egypt)',
+            'Pedri (Spain)',
+            'Promise Akinpelu (Canada)',
+            'Raul Jimenez (Mexico)',
+            'Ricardo Pepi (United States)',
+            'Takefusa Kubo (Japan)',
+            'Antoine Semenyo (Ghana)',
+            'Antonio Sanabria (Paraguay)',
+            'Iqraam Rayners (South Africa)',
+            'Patrik Schick (Czechia)',
+            'Amad Diallo (Ivory Coast)',
+            'Federico Viñas (Uruguay)',
+            'Giorgian de Arrascaeta (Uruguay)',
+            'Kendry Páez (Ecuador)',
+            'Kerem Aktürkoğlu (Türkiye)',
+            'Rayan Vitor',
+            'Ismael Saibari (Morocco)',
+            'Son Heung-min (South Korea)',
+            'Arda Guler (Türkiye)',
+            'Kenan Yildiz (Türkiye)',
+            'Andrej Kramaric (Croatia)',
+            'Daizen Maeda (Japan)',
+            'Miguel Almiron (Paraguay)',
+            'Youssef En-Nesyri (Morocco)',
+            'Cyle Larin (Canada)',
+            'Scott McTominay (Scotland)',
+            'Mehdi Taremi (Iran)',
+            'Marko Arnautovic (Austria)',
+            'Alphonso Davies (Canada)',
+            'Antonio Nusa (Norway)',
+            'Ayoub El Kaabi (Morocco)',
+            'Enzo Fernandez (Argentina)',
+            'Granit Xhaka (Switzerland)',
+            'Jean-Philippe Mateta (France)',
+            'Jhon Arias (Colombia)',
+            'Jorgen Strand Larsen (Norway)',
+            'Kevin De Bruyne (Belgium)',
+            'Lee Kang-in (South Korea)',
+            'Mikel Merino (Spain)',
+            'Orbelin Pineda (Mexico)',
+            'Oscar Bobb (Norway)',
+            'Riyad Mahrez (Algeria)',
+            'Brahim Diaz (Morocco)',
+            'Brian Rodriguez (Uruguay)',
+            'Luka Modric (Croatia)',
+            'Edin Dzeko (Bosnia and Herzegovina)',
+            'Joao Felix (Portugal)',
+            'Rayan Cherki (France)',
+            'Almoez Ali (Qatar)',
+            'Chris Wood (New Zealand)',
+            'Martin Odegaard (Norway)',
+            'Facundo Pellistri (Uruguay)',
+            'Giovanni Reyna (United States)',
+            'Hwang Hee-chan (South Korea)',
+            'Ismaila Sarr (Senegal)',
+            'Nikola Vlasic (Croatia)',
+            'Nicolas Pepe (Ivory Coast)',
+            'Musa Al-Taamari (Jordan)',
+            'Christoph Baumgartner (Austria)',
+            'Yan Diomande (Ivory Coast)',
+            'Can Uzun (Türkiye)',
+            'Che Adams (Scotland)',
+            'Salem Al-Dawsari (Saudi Arabia)',
+            'Saleh Alshehri (Saudi Arabia)',
+            'Declan Rice (England)',
+            'Mohamed Toure (Australia)',
+            'Cedric Bakambu (DR Congo)',
+            'Kerim Alajbegovic (Bosnia and Herzegovina)',
+            'Wilson Isidor (Haiti)',
+            'Lyndon Dykes (Scotland)',
+            'Ryan Christie (Scotland)',
+            'Daichi Kamada (Japan)',
+            'Lawrence Shankland (Scotland)',
+            'Hazem Mastouri (Tunisia)',
+            'Lyle Foster (South Africa)',
+            'John McGinn (Scotland)',
+            'Martin Boyle (Australia)',
+            'Nestory Irankunda (Australia)',
+            'Ben Waine (New Zealand)',
+            'Brenden Aaronson (United States)',
+            'Eldor Shomurodov (Uzbekistan)',
+            'Ryan Mendes (Cape Verde)',
+            'Hannibal Mejbri (Tunisia)'
+        ];
+
         let currentUser = null;
         let isAdmin = false;
+
         let appData = {
-            settings: { name: 'World Cup 2026 Comp', deadline: '', adminPassword: 'admin123' },
-            brackets: {},
+            settings: {
+                name: 'World Cup 2026 Comp',
+                deadline: '',
+                adminPassword: 'admin123',
+                topGoalscorerWinner: ''
+            },
+            brackets: DEFAULT_BRACKETS,
             picks: {},
             matchResults: {},
             apiConfig: { mode: 'manual', apiKey: '', leagueId: '1', season: '2026', interval: 90, enabled: false }
         };
+
         let tempPicks = {};
         let apiPollTimer = null;
-
-        const ROUND_LABELS = { group: 'Group Stage', r16: 'Last 16', qf: 'Quarter Final', sf: 'Semi Final', final: 'Final' };
-        const ROUND_POINTS = { group: { win: 2, draw: 1 }, r16: { win: 5 }, qf: { win: 8 }, sf: { win: 10 }, final: { win: 20 } };
-        const ROUND_CLASS = { group: 'round-group', r16: 'round-r16', qf: 'round-qf', sf: 'round-sf', final: 'round-final' };
-        const NUM_BRACKETS = 8;
 
         // ============================================================
         // INIT
@@ -2361,27 +2617,53 @@
             const breakdown = {};
 
             Object.entries(appData.matchResults || {}).forEach(([, match]) => {
-                const { teamA, teamB, result, round } = match;
+                const { teamA, teamB, result, round, scoreA = 0, scoreB = 0 } = match;
                 const pts = ROUND_POINTS[round];
                 if (!pts) return;
 
                 Object.entries(playerPicks).forEach(([bk, team]) => {
-                    if (!team) return;
+                    if (!team || bk.startsWith('_')) return;
+
                     const normalTeam = team.toLowerCase();
                     const aWon = result === 'home';
                     const bWon = result === 'away';
                     const isDraw = result === 'draw';
 
                     if (normalTeam === teamA.toLowerCase()) {
-                        if (aWon && pts.win) { total += pts.win; breakdown[team] = (breakdown[team] || 0) + pts.win; }
-                        else if (isDraw && pts.draw) { total += pts.draw; breakdown[team] = (breakdown[team] || 0) + pts.draw; }
+                        let earned = 0;
+                        if (aWon && pts.win) earned += pts.win;
+                        else if (isDraw && pts.draw) earned += pts.draw;
+                        if (pts.goal) earned += Number(scoreA || 0);
+
+                        if (earned > 0) {
+                            total += earned;
+                            breakdown[team] = (breakdown[team] || 0) + earned;
+                        }
                     }
+
                     if (normalTeam === teamB.toLowerCase()) {
-                        if (bWon && pts.win) { total += pts.win; breakdown[team] = (breakdown[team] || 0) + pts.win; }
-                        else if (isDraw && pts.draw) { total += pts.draw; breakdown[team] = (breakdown[team] || 0) + pts.draw; }
+                        let earned = 0;
+                        if (bWon && pts.win) earned += pts.win;
+                        else if (isDraw && pts.draw) earned += pts.draw;
+                        if (pts.goal) earned += Number(scoreB || 0);
+
+                        if (earned > 0) {
+                            total += earned;
+                            breakdown[team] = (breakdown[team] || 0) + earned;
+                        }
                     }
                 });
             });
+
+            if (
+                playerPicks._topGoalscorer &&
+                appData.settings.topGoalscorerWinner &&
+                playerPicks._topGoalscorer === appData.settings.topGoalscorerWinner
+            ) {
+                total += TOP_SCORER_BONUS;
+                breakdown['Top Goalscorer Bonus'] = (breakdown['Top Goalscorer Bonus'] || 0) + TOP_SCORER_BONUS;
+            }
+
             return { total, breakdown };
         }
 
@@ -2513,6 +2795,7 @@
                 document.getElementById('bracketPicker').innerHTML = '<div class="alert alert-info">Brackets have not been set up yet. Check back soon!</div>';
                 document.getElementById('submitPicksArea').classList.add('hidden');
                 updatePickCount();
+                renderTopGoalscorerDropdown(locked);
                 return;
             }
 
@@ -2522,21 +2805,39 @@
                 const picked = tempPicks[bk] || '';
                 const hasPick = !!picked;
                 return `<div class="bracket-section">
-            <div class="bracket-header ${hasPick ? 'picked' : ''}">
-                <span>${esc(bracket.name || bk)}</span>
-                <span style="font-size:0.85em">${hasPick ? '✓ ' + esc(picked) : 'Pick 1'}</span>
-            </div>
-            <div class="bracket-teams">
-                ${teams.map(t => `<div class="team-option ${tempPicks[bk] === t ? 'selected' : ''} ${locked ? 'disabled' : ''}"
-                    onclick="${locked ? '' : `pickTeam('${bk}','${t.replace(/'/g, "\\'")}',this)`}">
-                    <span>${countryFlag(t)}</span><span>${esc(t)}</span>
-                </div>`).join('')}
-            </div>
-        </div>`;
+                    <div class="bracket-header ${hasPick ? 'picked' : ''}">
+                        <span>${esc(bracket.name || bk)}</span>
+                        <span style="font-size:0.85em">${hasPick ? '✓ ' + esc(picked) : 'Pick 1'}</span>
+                    </div>
+                    <div class="bracket-teams">
+                        ${teams.map(t => `<div class="team-option ${tempPicks[bk] === t ? 'selected' : ''} ${locked ? 'disabled' : ''}"
+                            onclick="${locked ? '' : `pickTeam('${bk}','${t.replace(/'/g, "\\'")}',this)`}">
+                            <span>${countryFlag(t)}</span><span>${esc(t)}</span>
+                        </div>`).join('')}
+                    </div>
+                </div>`;
             }).join('');
 
+            renderTopGoalscorerDropdown(locked);
             updatePickCount();
             document.getElementById('submitPicksArea').classList.toggle('hidden', locked);
+        }
+
+        function renderTopGoalscorerDropdown(locked) {
+            const select = document.getElementById('topGoalscorerPick');
+            if (!select) return;
+
+            const selected = tempPicks._topGoalscorer || '';
+            select.innerHTML = `
+                <option value="">Select top goalscorer...</option>
+                ${TOP_GOALSCORERS.map(name => `
+                    <option value="${esc(name)}" ${selected === name ? 'selected' : ''}>${esc(name)}</option>
+                `).join('')}
+            `;
+            select.disabled = locked;
+            select.onchange = function () {
+                tempPicks._topGoalscorer = this.value;
+            };
         }
 
         function pickTeam(bracketKey, team, el) {
@@ -2547,19 +2848,28 @@
 
         function updatePickCount() {
             const count = Object.entries(tempPicks).filter(([k, v]) => !k.startsWith('_') && v).length;
+            const scorerPicked = !!tempPicks._topGoalscorer;
             const el = document.getElementById('pickCount');
-            el.textContent = `Selected ${count} / ${NUM_BRACKETS} brackets`;
-            el.className = 'pick-count' + (count === NUM_BRACKETS ? ' full' : '');
+            el.textContent = `Selected ${count} / ${NUM_BRACKETS} brackets${scorerPicked ? ' + top goalscorer' : ''}`;
+            el.className = 'pick-count' + (count === NUM_BRACKETS && scorerPicked ? ' full' : '');
         }
 
         function submitPicks() {
             const count = Object.entries(tempPicks).filter(([k, v]) => !k.startsWith('_') && v).length;
+
             if (count < NUM_BRACKETS) {
                 showMsg('picksMsg', `Please pick a team from all ${NUM_BRACKETS} brackets. You have ${count} so far.`, 'error');
                 return;
             }
+
+            if (!tempPicks._topGoalscorer) {
+                showMsg('picksMsg', 'Please select a top goalscorer tiebreaker.', 'error');
+                return;
+            }
+
             const key = slugify(currentUser);
             const toSave = { ...tempPicks, _username: currentUser };
+
             db.ref('/picks/' + key).set(toSave).then(() => {
                 showMsg('picksMsg', 'Picks saved!', 'success');
                 appData.picks[key] = toSave;
@@ -2717,32 +3027,41 @@
 
         function renderBracketAdmin() {
             const area = document.getElementById('bracketAdminArea');
+            const keys = Object.keys(appData.brackets || {}).length
+                ? Object.keys(appData.brackets).sort()
+                : Array.from({ length: NUM_BRACKETS }, (_, i) => String.fromCharCode(65 + i));
+
             let html = '';
-            for (let i = 1; i <= NUM_BRACKETS; i++) {
-                const bk = 'bracket' + i;
-                const b = appData.brackets[bk] || { name: 'Bracket ' + i, teams: [] };
+            keys.forEach((bk, idx) => {
+                const b = appData.brackets[bk] || { name: 'Bracket ' + String.fromCharCode(65 + idx), teams: [] };
                 html += `<div class="bracket-admin">
             <div class="bracket-admin-header">
-                <input type="text" id="bname-${bk}" value="${esc(b.name)}" placeholder="Bracket ${i} name">
+                <input type="text" id="bname-${bk}" value="${esc(b.name)}" placeholder="Bracket ${bk}">
             </div>
             <textarea id="bteams-${bk}" placeholder="Enter 4 teams, one per line">${(b.teams || []).join('\n')}</textarea>
         </div>`;
-            }
+            });
             area.innerHTML = html;
         }
 
         function saveBrackets() {
+            const bracketKeys = Object.keys(appData.brackets || {}).length
+                ? Object.keys(appData.brackets).sort()
+                : Array.from({ length: NUM_BRACKETS }, (_, i) => String.fromCharCode(65 + i));
+
             const brackets = {};
-            for (let i = 1; i <= NUM_BRACKETS; i++) {
-                const bk = 'bracket' + i;
-                const name = document.getElementById('bname-' + bk).value.trim() || 'Bracket ' + i;
-                const teams = document.getElementById('bteams-' + bk).value.split('\n').map(t => t.trim()).filter(t => t);
+            bracketKeys.forEach((bk, idx) => {
+                const name = document.getElementById('bname-' + bk).value.trim() || ('Bracket ' + String.fromCharCode(65 + idx));
+                const teams = document.getElementById('bteams-' + bk).value
+                    .split('\n')
+                    .map(t => t.trim())
+                    .filter(Boolean);
                 brackets[bk] = { name, teams };
-            }
+            });
+
             db.ref('/brackets').set(brackets).then(() => {
                 appData.brackets = brackets;
                 showMsg('bracketSaveMsg', 'Brackets saved!', 'success');
-                // Update teams datalist for match entry
                 updateTeamsDatalist();
             }).catch(e => showMsg('bracketSaveMsg', 'Error: ' + e.message, 'error'));
         }
@@ -2761,32 +3080,83 @@
             if (!results.length) { container.innerHTML = '<p style="color:#999;margin-top:10px">No results entered yet.</p>'; return; }
 
             container.innerHTML = `<table class="results-table" style="margin-top:15px">
-        <thead><tr><th>Home</th><th>Away</th><th>Round</th><th>Result</th><th></th></tr></thead>
-        <tbody>${results.map(([key, m]) =>
-                `<tr>
-                <td>${esc(m.teamA)}</td><td>${esc(m.teamB)}</td>
-                <td><span class="round-badge ${ROUND_CLASS[m.round]}">${ROUND_LABELS[m.round]}</span></td>
-                <td>${m.result === 'home' ? esc(m.teamA) + ' Win' : m.result === 'away' ? esc(m.teamB) + ' Win' : 'Draw'}</td>
-                <td><button class="btn btn-danger btn-sm" onclick="deleteMatch('${key}')">Delete</button></td>
-            </tr>`
-            ).join('')}</tbody>
-    </table>`;
+                <thead>
+                    <tr>
+                        <th>Home</th>
+                        <th>Score</th>
+                        <th>Away</th>
+                        <th>Round</th>
+                        <th>Result</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${results.map(([key, m]) => `
+                        <tr>
+                            <td>${esc(m.teamA)}</td>
+                            <td>${Number(m.scoreA || 0)} - ${Number(m.scoreB || 0)}</td>
+                            <td>${esc(m.teamB)}</td>
+                            <td><span class="round-badge ${ROUND_CLASS[m.round]}">${ROUND_LABELS[m.round]}</span></td>
+                            <td>${m.result === 'home' ? esc(m.teamA) + ' Win' : m.result === 'away' ? esc(m.teamB) + ' Win' : 'Draw'}</td>
+                            <td><button class="btn btn-danger btn-sm" onclick="deleteMatchResult('${key}')">Delete</button></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>`;
         }
 
         function addMatchResult() {
             const teamA = document.getElementById('matchTeamA').value.trim();
             const teamB = document.getElementById('matchTeamB').value.trim();
+            const scoreA = Number(document.getElementById('matchScoreA').value || 0);
+            const scoreB = Number(document.getElementById('matchScoreB').value || 0);
             const round = document.getElementById('matchRound').value;
             const result = document.getElementById('matchResult').value;
-            if (!teamA || !teamB) { showMsg('matchEntryMsg', 'Enter both team names.', 'error'); return; }
-            if (teamA.toLowerCase() === teamB.toLowerCase()) { showMsg('matchEntryMsg', 'Teams must be different.', 'error'); return; }
+
+            if (!teamA || !teamB) {
+                showMsg('matchEntryMsg', 'Enter both team names.', 'error');
+                return;
+            }
+            if (teamA.toLowerCase() === teamB.toLowerCase()) {
+                showMsg('matchEntryMsg', 'Teams must be different.', 'error');
+                return;
+            }
+            if (scoreA < 0 || scoreB < 0) {
+                showMsg('matchEntryMsg', 'Goals cannot be negative.', 'error');
+                return;
+            }
+
+            if (result === 'draw' && scoreA !== scoreB) {
+                showMsg('matchEntryMsg', 'Draw result must have equal scores.', 'error');
+                return;
+            }
+            if (result === 'home' && scoreA <= scoreB) {
+                showMsg('matchEntryMsg', 'Home win must have home goals greater than away goals.', 'error');
+                return;
+            }
+            if (result === 'away' && scoreB <= scoreA) {
+                showMsg('matchEntryMsg', 'Away win must have away goals greater than home goals.', 'error');
+                return;
+            }
+
             const key = slugify(teamA + '-vs-' + teamB + '-' + round + '-' + Date.now());
-            db.ref('/matchResults/' + key).set({ teamA, teamB, round, result, added: Date.now() }).then(() => {
+            const payload = {
+                teamA,
+                teamB,
+                scoreA,
+                scoreB,
+                round,
+                result,
+                source: 'manual'
+            };
+
+            db.ref('/matchResults/' + key).set(payload).then(() => {
+                showMsg('matchEntryMsg', 'Match result added.', 'success');
                 document.getElementById('matchTeamA').value = '';
                 document.getElementById('matchTeamB').value = '';
-                showMsg('matchEntryMsg', 'Result added!', 'success');
-                renderMatchAdmin();
-            }).catch(e => showMsg('matchEntryMsg', 'Error: ' + e.message, 'error'));
+                document.getElementById('matchScoreA').value = '';
+                document.getElementById('matchScoreB').value = '';
+            }).catch(e => showMsg('matchEntryMsg', 'Save failed: ' + e.message, 'error'));
         }
 
         function deleteMatch(key) {
@@ -2841,14 +3211,32 @@
             showMsg('apiSaveMsg', 'Fetching now...', 'info');
         }
 
+        function populateTopGoalscorerAdminSelect() {
+            const select = document.getElementById('settingTopGoalscorerWinner');
+            if (!select) return;
+
+            const current = appData.settings.topGoalscorerWinner || '';
+            select.innerHTML = `
+                <option value="">Not decided yet</option>
+                ${TOP_GOALSCORERS.map(name => `
+                    <option value="${esc(name)}" ${current === name ? 'selected' : ''}>${esc(name)}</option>
+                `).join('')}
+            `;
+        }
+
         function loadSettingsForm() {
             document.getElementById('settingName').value = appData.settings.name || 'World Cup 2026 Comp';
+
             if (appData.settings.deadline) {
-                // Convert to local datetime-local format
                 const d = new Date(appData.settings.deadline);
                 const pad = n => String(n).padStart(2, '0');
-                document.getElementById('settingDeadline').value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                document.getElementById('settingDeadline').value =
+                    `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            } else {
+                document.getElementById('settingDeadline').value = '';
             }
+
+            populateTopGoalscorerAdminSelect();
         }
 
         function saveSettings() {
@@ -2856,7 +3244,8 @@
             const settings = {
                 name: document.getElementById('settingName').value.trim() || 'World Cup 2026 Comp',
                 deadline: document.getElementById('settingDeadline').value ? new Date(document.getElementById('settingDeadline').value).toISOString() : '',
-                adminPassword: pw ? pw : appData.settings.adminPassword
+                adminPassword: pw ? pw : appData.settings.adminPassword,
+                topGoalscorerWinner: document.getElementById('settingTopGoalscorerWinner')?.value || ''
             };
             db.ref('/settings').set(settings).then(() => {
                 appData.settings = settings;
@@ -2908,29 +3297,41 @@
         function fetchEspnScoreboard(slug) {
             const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${slug}/scoreboard`;
             return fetch(url)
-                .then(r => r.json())
+                .then(r => {
+                    if (!r.ok) throw new Error(`ESPN request failed: ${r.status}`);
+                    return r.json();
+                })
                 .then(data => {
                     const matches = [];
+
                     (data.events || []).forEach(event => {
                         const competition = event.competitions && event.competitions[0];
                         if (!competition) return;
-                        if (competition.status.type.completed !== true) return;
-                        const comps = competition.competitors;
-                        if (!comps || comps.length < 2) return;
+
+                        const statusType = competition.status && competition.status.type;
+                        if (!statusType || statusType.completed !== true) return;
+
+                        const comps = competition.competitors || [];
                         const home = comps.find(c => c.homeAway === 'home');
                         const away = comps.find(c => c.homeAway === 'away');
                         if (!home || !away) return;
-                        const hg = parseInt(home.score) || 0;
-                        const ag = parseInt(away.score) || 0;
-                        const result = hg > ag ? 'home' : ag > hg ? 'away' : 'draw';
-                        const round = mapEspnRound(event.name || '');
+
+                        const scoreA = parseInt(home.score, 10) || 0;
+                        const scoreB = parseInt(away.score, 10) || 0;
+                        const result = scoreA > scoreB ? 'home' : scoreB > scoreA ? 'away' : 'draw';
+                        const round = mapEspnRound(event.name || competition.notes?.[0]?.headline || '');
+
                         matches.push({
                             teamA: home.team.displayName,
                             teamB: away.team.displayName,
-                            result, round,
+                            scoreA,
+                            scoreB,
+                            result,
+                            round,
                             espnId: event.id
                         });
                     });
+
                     return matches;
                 });
         }
@@ -2944,7 +3345,16 @@
                     const manualKey = findManualMatch(m.teamA, m.teamB);
                     if (!manualKey) {
                         const key = 'espn-' + m.espnId;
-                        updates[key] = { teamA: m.teamA, teamB: m.teamB, round: m.round, result: m.result, source: 'espn' };
+                        updates[key] = {
+                            teamA: m.teamA,
+                            teamB: m.teamB,
+                            scoreA: m.scoreA,
+                            scoreB: m.scoreB,
+                            round: m.round,
+                            result: m.result,
+                            source: 'espn',
+                            espnId: m.espnId
+                        };
                     }
                 });
                 if (Object.keys(updates).length) {
