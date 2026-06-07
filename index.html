@@ -724,12 +724,21 @@
         }
 
         .inline-flag {
-            width: 1.35em;
-            height: 1em;
+            width: 1.2em;
+            height: 0.9em;
             object-fit: cover;
             display: inline-block;
-            vertical-align: -0.14em;
+            vertical-align: -0.12em;
             border-radius: 2px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+            background: #fff;
+        }
+
+        .inline-flag-fallback {
+            width: 1.2em;
+            text-align: center;
+            box-shadow: none;
+            background: transparent;
         }
 
         /* ============ SYNC / LOADING ============ */
@@ -3430,88 +3439,94 @@
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '');
 
-            const specialFlags = {
-                'england': 'https://flagcdn.com/24x18/gb-eng.png',
-                'scotland': 'https://flagcdn.com/24x18/gb-sct.png',
-                'wales': 'https://flagcdn.com/24x18/gb-wls.png'
+            const codeMap = {
+                'brazil': 'br',
+                'argentina': 'ar',
+                'france': 'fr',
+                'england': 'gb-eng',
+                'spain': 'es',
+                'germany': 'de',
+                'netherlands': 'nl',
+                'portugal': 'pt',
+                'belgium': 'be',
+                'denmark': 'dk',
+                'croatia': 'hr',
+                'uruguay': 'uy',
+                'serbia': 'rs',
+                'senegal': 'sn',
+                'switzerland': 'ch',
+                'usa': 'us',
+                'united states': 'us',
+                'mexico': 'mx',
+                'poland': 'pl',
+                'canada': 'ca',
+                'wales': 'gb-wls',
+                'ecuador': 'ec',
+                'morocco': 'ma',
+                'japan': 'jp',
+                'south korea': 'kr',
+                'cameroon': 'cm',
+                'qatar': 'qa',
+                'ghana': 'gh',
+                'australia': 'au',
+                'iran': 'ir',
+                'tunisia': 'tn',
+                'saudi arabia': 'sa',
+                'costa rica': 'cr',
+                'colombia': 'co',
+                'chile': 'cl',
+                'peru': 'pe',
+                'nigeria': 'ng',
+                'egypt': 'eg',
+                'ivory coast': 'ci',
+                "cote d'ivoire": 'ci',
+                'cote divoire': 'ci',
+                'turkey': 'tr',
+                'turkiye': 'tr',
+                'trkiye': 'tr',
+                'austria': 'at',
+                'ukraine': 'ua',
+                'russia': 'ru',
+                'sweden': 'se',
+                'norway': 'no',
+                'scotland': 'gb-sct',
+                'ireland': 'ie',
+                'new zealand': 'nz',
+                'venezuela': 've',
+                'bolivia': 'bo',
+                'paraguay': 'py',
+                'algeria': 'dz',
+                'mali': 'ml',
+                'kenya': 'ke',
+                'honduras': 'hn',
+                'panama': 'pa',
+                'czechia': 'cz',
+                'czech republic': 'cz',
+                'haiti': 'ht',
+                'jordan': 'jo',
+                'south africa': 'za',
+                'bosnia-herzegovina': 'ba',
+                'bosnia and herzegovina': 'ba',
+                'bosnia': 'ba',
+                'iraq': 'iq',
+                'uzbekistan': 'uz',
+                'curacao': 'cw',
+                'congo dr': 'cd',
+                'dr congo': 'cd',
+                'cape verde': 'cv'
             };
 
-            if (specialFlags[key]) {
-                return `<img src="${specialFlags[key]}" alt="${esc(name)} flag" class="inline-flag">`;
+            const code = codeMap[key];
+            if (!code) {
+                return `<span class="inline-flag inline-flag-fallback" aria-label="${esc(name)} flag">🏳️</span>`;
             }
 
-            const flags = {
-                'brazil': '🇧🇷',
-                'argentina': '🇦🇷',
-                'france': '🇫🇷',
-                'spain': '🇪🇸',
-                'germany': '🇩🇪',
-                'netherlands': '🇳🇱',
-                'portugal': '🇵🇹',
-                'belgium': '🇧🇪',
-                'denmark': '🇩🇰',
-                'croatia': '🇭🇷',
-                'uruguay': '🇺🇾',
-                'serbia': '🇷🇸',
-                'senegal': '🇸🇳',
-                'switzerland': '🇨🇭',
-                'usa': '🇺🇸',
-                'mexico': '🇲🇽',
-                'poland': '🇵🇱',
-                'canada': '🇨🇦',
-                'ecuador': '🇪🇨',
-                'morocco': '🇲🇦',
-                'japan': '🇯🇵',
-                'south korea': '🇰🇷',
-                'cameroon': '🇨🇲',
-                'qatar': '🇶🇦',
-                'ghana': '🇬🇭',
-                'australia': '🇦🇺',
-                'iran': '🇮🇷',
-                'tunisia': '🇹🇳',
-                'saudi arabia': '🇸🇦',
-                'costa rica': '🇨🇷',
-                'colombia': '🇨🇴',
-                'chile': '🇨🇱',
-                'peru': '🇵🇪',
-                'nigeria': '🇳🇬',
-                'egypt': '🇪🇬',
-                'ivory coast': '🇨🇮',
-                "cote d'ivoire": '🇨🇮',
-                'turkey': '🇹🇷',
-                'turkiye': '🇹🇷',
-                'austria': '🇦🇹',
-                'ukraine': '🇺🇦',
-                'russia': '🇷🇺',
-                'sweden': '🇸🇪',
-                'norway': '🇳🇴',
-                'ireland': '🇮🇪',
-                'new zealand': '🇳🇿',
-                'venezuela': '🇻🇪',
-                'bolivia': '🇧🇴',
-                'paraguay': '🇵🇾',
-                'algeria': '🇩🇿',
-                'mali': '🇲🇱',
-                'kenya': '🇰🇪',
-                'honduras': '🇭🇳',
-                'panama': '🇵🇦',
-                'czechia': '🇨🇿',
-                'czech republic': '🇨🇿',
-                'haiti': '🇭🇹',
-                'jordan': '🇯🇴',
-                'united states': '🇺🇸',
-                'south africa': '🇿🇦',
-                'bosnia-herzegovina': '🇧🇦',
-                'bosnia and herzegovina': '🇧🇦',
-                'iraq': '🇮🇶',
-                'uzbekistan': '🇺🇿',
-                'curacao': '🇨🇼',
-                'congo dr': '🇨🇩',
-                'dr congo': '🇨🇩',
-                'cape verde': '🇨🇻'
-            };
-
-            return flags[key] || '🏳️';
+            return `<img src="https://flagcdn.com/24x18/${code}.png"
+                 alt="${esc(name)} flag"
+                 class="inline-flag"
+                 loading="lazy"
+                 width="24"
+                 height="18">`;
         }
     </script>
 </body>
