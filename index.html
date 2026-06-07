@@ -723,6 +723,15 @@
             font-size: 0.9em;
         }
 
+        .inline-flag {
+            width: 1.35em;
+            height: 1em;
+            object-fit: cover;
+            display: inline-block;
+            vertical-align: -0.14em;
+            border-radius: 2px;
+        }
+
         /* ============ SYNC / LOADING ============ */
         .sync-status {
             position: fixed;
@@ -3421,11 +3430,20 @@
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '');
 
+            const specialFlags = {
+                'england': 'https://flagcdn.com/24x18/gb-eng.png',
+                'scotland': 'https://flagcdn.com/24x18/gb-sct.png',
+                'wales': 'https://flagcdn.com/24x18/gb-wls.png'
+            };
+
+            if (specialFlags[key]) {
+                return `<img src="${specialFlags[key]}" alt="${esc(name)} flag" class="inline-flag">`;
+            }
+
             const flags = {
                 'brazil': '🇧🇷',
                 'argentina': '🇦🇷',
                 'france': '🇫🇷',
-                'england': '🏴',
                 'spain': '🇪🇸',
                 'germany': '🇩🇪',
                 'netherlands': '🇳🇱',
@@ -3441,7 +3459,6 @@
                 'mexico': '🇲🇽',
                 'poland': '🇵🇱',
                 'canada': '🇨🇦',
-                'wales': '🏴',
                 'ecuador': '🇪🇨',
                 'morocco': '🇲🇦',
                 'japan': '🇯🇵',
@@ -3468,7 +3485,6 @@
                 'russia': '🇷🇺',
                 'sweden': '🇸🇪',
                 'norway': '🇳🇴',
-                'scotland': '🏴',
                 'ireland': '🇮🇪',
                 'new zealand': '🇳🇿',
                 'venezuela': '🇻🇪',
