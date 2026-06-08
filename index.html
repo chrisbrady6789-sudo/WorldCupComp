@@ -1264,15 +1264,11 @@
         }
 
         .fixture-row {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr auto auto;
-            gap: 8px;
-            align-items: center;
-            padding: 11px 14px;
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 7px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            overflow: hidden;
             transition: border-color 0.15s;
         }
 
@@ -1287,47 +1283,23 @@
         }
 
         .fixture-row.ft {
-            opacity: 0.75;
+            opacity: 0.72;
         }
 
-        .fix-home {
-            text-align: right;
-            font-weight: 600;
-            font-size: 0.92em;
-            color: var(--text);
+        /* Top strip: KO time + group badge (hidden when live/ft) */
+        .fix-topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 6px;
         }
 
-        .fix-away {
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.92em;
-            color: var(--text);
-        }
-
-        .fix-score {
-            text-align: center;
-            min-width: 52px;
-            font-weight: 800;
-            font-size: 1em;
-            color: var(--navy-mid);
-            background: var(--card-bg2);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 3px 8px;
-        }
-
-        .fix-score.live-score {
-            background: #dcfce7;
-            border-color: #86efac;
-            color: #15803d;
-        }
-
-        .fix-time {
+        .fix-ko-time {
             font-size: 0.78em;
-            color: var(--text-light);
-            text-align: right;
-            min-width: 68px;
-            white-space: nowrap;
+            font-weight: 700;
+            color: var(--navy-light);
+            letter-spacing: 0.4px;
         }
 
         .fix-group {
@@ -1339,6 +1311,92 @@
             color: #1d4ed8;
             border: 1px solid #bfdbfe;
             white-space: nowrap;
+        }
+
+        /* Middle row: home · score/vs · away */
+        .fix-matchrow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 14px;
+        }
+
+        .fix-home {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            font-size: 0.92em;
+            color: var(--text);
+        }
+
+        .fix-away {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            font-size: 0.92em;
+            color: var(--text);
+        }
+
+        .fix-centre {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .fix-score {
+            text-align: center;
+            min-width: 52px;
+            font-weight: 800;
+            font-size: 1.05em;
+            color: var(--navy-mid);
+            background: var(--card-bg2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px 10px;
+        }
+
+        .fix-score.live-score {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #15803d;
+        }
+
+        .fix-odds-bar { display: none; }
+        .fix-odds-header { display: none; }
+
+        .fix-odds-val {
+            font-size: 0.82em;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 8px;
+            background: #f4f7fc;
+            border: 1px solid var(--border);
+            color: var(--text-mid);
+            white-space: nowrap;
+        }
+
+        .fix-odds-val.fav {
+            background: #fff8e1;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .fix-odds-draw {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .fix-odds-draw-label {
+            font-size: 0.64em;
+            color: var(--text-light);
         }
 
         .fix-status-live {
@@ -1355,6 +1413,12 @@
             font-size: 1.2em;
         }
 
+        @media (max-width: 600px) {
+            .fix-score {
+                min-width: 44px;
+                font-size: 0.92em;
+            }
+        }
         .standings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -1427,16 +1491,6 @@
         }
 
         @media (max-width: 600px) {
-            .fixture-row {
-                grid-template-columns: 1fr auto 1fr;
-                gap: 6px;
-            }
-
-            .fix-time,
-            .fix-group {
-                display: none;
-            }
-
             .fix-score {
                 min-width: 44px;
                 font-size: 0.92em;
@@ -1547,7 +1601,16 @@
         <div id="homePage" class="container hidden">
             <div class="card" style="max-width:700px;margin:0 auto">
                 <h2 id="homeGreeting">⚽ Welcome to World Cup 2026!</h2>
-                <p style="color:#64748b;margin-bottom:20px">Here's everything you need to know to play.</p>
+                <p style="color:#64748b;margin-bottom:8px">Here's everything you need to know to play.</p>
+
+                <div id="renameSection" class="hidden" style="margin-bottom:20px">
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                        <input type="text" id="renameInput" placeholder="Display name" style="flex:1;min-width:140px;padding:7px 11px;border:1px solid var(--border);border-radius:8px;font-size:0.9em">
+                        <button class="btn btn-gold btn-sm" onclick="saveDisplayName()">Save</button>
+                        <button class="btn btn-sm" onclick="document.getElementById('renameSection').classList.add('hidden')">Cancel</button>
+                    </div>
+                    <div id="renameMsg" style="font-size:0.82em;margin-top:6px"></div>
+                </div>
 
                 <div class="rules-box" style="margin-bottom:24px">
                     <h3>📋 How It Works</h3>
@@ -2080,12 +2143,12 @@
             A: { name: 'Bracket A', teams: ['France', 'Spain', 'England', 'Brazil'] },
             B: { name: 'Bracket B', teams: ['Portugal', 'Argentina', 'Germany', 'Netherlands'] },
             C: { name: 'Bracket C', teams: ['Belgium', 'Norway', 'Colombia', 'Japan'] },
-            D: { name: 'Bracket D', teams: ['USA', 'Mexico', 'Uruguay', 'Morocco'] },
+            D: { name: 'Bracket D', teams: ['United States', 'Mexico', 'Uruguay', 'Morocco'] },
             E: { name: 'Bracket E', teams: ['Türkiye', 'Croatia', 'Switzerland', 'Austria'] },
             F: { name: 'Bracket F', teams: ['Ecuador', 'Senegal', 'Canada', 'Ivory Coast'] },
             G: { name: 'Bracket G', teams: ['Scotland', 'Sweden', 'Paraguay', 'Algeria'] },
-            H: { name: 'Bracket H', teams: ['Bosnia & Herzegovina', 'Egypt', 'Australia', 'Cape Verde'] },
-            I: { name: 'Bracket I', teams: ['Curacao', 'DR Congo', 'Haiti', 'Iran'] },
+            H: { name: 'Bracket H', teams: ['Bosnia-Herzegovina', 'Egypt', 'Australia', 'Cape Verde'] },
+            I: { name: 'Bracket I', teams: ['Curaçao', 'Congo DR', 'Haiti', 'Iran'] },
             J: { name: 'Bracket J', teams: ['Iraq', 'Jordan', 'New Zealand', 'Panama'] },
             K: { name: 'Bracket K', teams: ['Qatar', 'Saudi Arabia', 'South Africa', 'Tunisia'] },
             L: { name: 'Bracket L', teams: ['Uzbekistan', 'Ghana', 'Czechia', 'South Korea'] }
@@ -2251,6 +2314,7 @@
         ];
 
         let currentUser = null;
+        let currentDisplayName = null;
         let isAdmin = false;
 
         let appData = {
@@ -2263,6 +2327,7 @@
             brackets: DEFAULT_BRACKETS,
             picks: {},
             matchResults: {},
+            users: {},
             apiConfig: { mode: 'manual', apiKey: '', leagueId: '1', season: '2026', interval: 90, enabled: false }
         };
 
@@ -2277,6 +2342,7 @@
             if (saved) {
                 const u = JSON.parse(saved);
                 currentUser = u.username;
+                currentDisplayName = u.displayName || u.username;
                 isAdmin = u.isAdmin;
             }
             loadAllData();
@@ -2289,6 +2355,7 @@
                 if (d.brackets) appData.brackets = d.brackets;
                 if (d.picks) appData.picks = d.picks;
                 if (d.matchResults) appData.matchResults = d.matchResults;
+                if (d.users) appData.users = d.users;
                 if (d.apiConfig) appData.apiConfig = { ...appData.apiConfig, ...d.apiConfig };
 
                 document.getElementById('loadingOverlay').style.display = 'none';
@@ -2460,7 +2527,8 @@
                 const u = snap.val();
                 if (u.password !== hashPassword(password)) { showMsg('loginMsg', 'Incorrect password.', 'error'); return; }
                 currentUser = username; isAdmin = false;
-                sessionStorage.setItem('wcUser', JSON.stringify({ username, isAdmin: false }));
+                currentDisplayName = u.displayName || username;
+                sessionStorage.setItem('wcUser', JSON.stringify({ username, displayName: currentDisplayName, isAdmin: false }));
                 showApp();
             });
         }
@@ -2475,19 +2543,55 @@
             const key = slugify(username);
             db.ref('/users/' + key).once('value').then(snap => {
                 if (snap.exists()) { showMsg('loginMsg', 'Username already taken.', 'error'); return; }
-                db.ref('/users/' + key).set({ username, password: hashPassword(password), created: Date.now() }).then(() => {
+                db.ref('/users/' + key).set({ username, displayName: username, password: hashPassword(password), created: Date.now() }).then(() => {
                     currentUser = username; isAdmin = false;
-                    sessionStorage.setItem('wcUser', JSON.stringify({ username, isAdmin: false }));
+                    currentDisplayName = username;
+                    sessionStorage.setItem('wcUser', JSON.stringify({ username, displayName: username, isAdmin: false }));
                     showApp();
                 });
             });
         }
 
         function logout() {
-            currentUser = null; isAdmin = false;
+            currentUser = null; currentDisplayName = null; isAdmin = false;
             sessionStorage.removeItem('wcUser');
             stopApiPoll();
             window.location.reload();
+        }
+
+        function toggleRename() {
+            const sec = document.getElementById('renameSection');
+            if (sec.classList.contains('hidden')) {
+                document.getElementById('renameInput').value = currentDisplayName || currentUser;
+                document.getElementById('renameMsg').textContent = '';
+                sec.classList.remove('hidden');
+                showPage('home');
+                document.getElementById('renameInput').focus();
+            } else {
+                sec.classList.add('hidden');
+            }
+        }
+
+        async function saveDisplayName() {
+            const newName = document.getElementById('renameInput').value.trim();
+            const msgEl = document.getElementById('renameMsg');
+            msgEl.textContent = '';
+            if (!newName) { msgEl.style.color = 'red'; msgEl.textContent = 'Please enter a display name.'; return; }
+            if (newName.toLowerCase() === 'admin') { msgEl.style.color = 'red'; msgEl.textContent = 'That name is reserved.'; return; }
+            if (newName === currentDisplayName) { document.getElementById('renameSection').classList.add('hidden'); return; }
+
+            await db.ref('/users/' + slugify(currentUser) + '/displayName').set(newName);
+            currentDisplayName = newName;
+            sessionStorage.setItem('wcUser', JSON.stringify({ username: currentUser, displayName: newName, isAdmin: false }));
+            appData.users[slugify(currentUser)] = { ...appData.users[slugify(currentUser)], displayName: newName };
+
+            document.getElementById('userInfo').innerHTML =
+                `<strong>${esc(currentDisplayName)}</strong> <button class="btn btn-sm" onclick="toggleRename()" title="Change display name" style="padding:2px 7px;font-size:0.8em">✏️</button> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>`;
+            const greetEl = document.getElementById('homeGreeting');
+            if (greetEl) greetEl.textContent = 'Welcome back, ' + currentDisplayName + '!';
+
+            document.getElementById('renameSection').classList.add('hidden');
+            msgEl.style.color = 'green'; msgEl.textContent = 'Display name updated!';
         }
 
         function showUserPicker() {
@@ -2527,8 +2631,11 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('appContainer').classList.remove('hidden');
             document.getElementById('mainNav').classList.remove('hidden');
-            document.getElementById('userInfo').innerHTML =
-                `<strong>${esc(currentUser)}</strong> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>`;
+            const displayLabel = currentDisplayName || currentUser;
+            const canRename = !isAdmin && currentUser && currentUser !== '__guest__';
+            document.getElementById('userInfo').innerHTML = canRename
+                ? `<strong>${esc(displayLabel)}</strong> <button class="btn btn-sm" onclick="toggleRename()" title="Change display name" style="padding:2px 7px;font-size:0.8em">✏️</button> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>`
+                : `<strong>${esc(displayLabel)}</strong> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>`;
 
             if (isAdmin) {
                 document.getElementById('nav-admin').classList.remove('hidden');
@@ -2604,8 +2711,23 @@
             // But update the greeting if we want to personalise it.
             const el = document.getElementById('homeGreeting');
             if (el && currentUser && currentUser !== '__guest__') {
-                el.textContent = 'Welcome back, ' + currentUser + '!';
+                el.textContent = 'Welcome back, ' + (currentDisplayName || currentUser) + '!';
             }
+        }
+
+        // ============================================================
+        // TEAM NAME ALIASES (stored name → ESPN displayName, lowercased)
+        // ============================================================
+        const TEAM_ALIASES = {
+            'usa': 'united states',
+            'bosnia & herzegovina': 'bosnia-herzegovina',
+            'bosnia and herzegovina': 'bosnia-herzegovina',
+            'curacao': 'curaçao',
+            'dr congo': 'congo dr',
+        };
+        function normalizeTeam(name) {
+            const lower = (name || '').toLowerCase();
+            return TEAM_ALIASES[lower] || lower;
         }
 
         // ============================================================
@@ -2624,12 +2746,12 @@
                 Object.entries(playerPicks).forEach(([bk, team]) => {
                     if (!team || bk.startsWith('_')) return;
 
-                    const normalTeam = team.toLowerCase();
+                    const normalTeam = normalizeTeam(team);
                     const aWon = result === 'home';
                     const bWon = result === 'away';
                     const isDraw = result === 'draw';
 
-                    if (normalTeam === teamA.toLowerCase()) {
+                    if (normalTeam === normalizeTeam(teamA)) {
                         let earned = 0;
                         if (aWon && pts.win) earned += pts.win;
                         else if (isDraw && pts.draw) earned += pts.draw;
@@ -2641,7 +2763,7 @@
                         }
                     }
 
-                    if (normalTeam === teamB.toLowerCase()) {
+                    if (normalTeam === normalizeTeam(teamB)) {
                         let earned = 0;
                         if (bWon && pts.win) earned += pts.win;
                         else if (isDraw && pts.draw) earned += pts.draw;
@@ -2670,10 +2792,9 @@
         function getAllScores() {
             return Object.entries(appData.picks).map(([key, picks]) => {
                 const { total, breakdown } = computePlayerPoints(key);
-                const displayName = Object.values(picks).length > 0
-                    ? (appData.picks[key]._username || key)
-                    : key;
-                return { key, displayName: appData.picks[key]._username || key, picks, total, breakdown };
+                const userRecord = appData.users?.[key];
+                const displayName = userRecord?.displayName || userRecord?.username || appData.picks[key]._username || key;
+                return { key, displayName, picks, total, breakdown };
             }).filter(p => p.key !== '_username').sort((a, b) => b.total - a.total);
         }
 
@@ -2945,9 +3066,9 @@
 
         function buildMatchBreakdown(playerKey) {
             const p = appData.picks[playerKey] || {};
-            const myTeams = Object.entries(p).filter(([k]) => !k.startsWith('_')).map(([, t]) => t.toLowerCase());
+            const myTeams = Object.entries(p).filter(([k]) => !k.startsWith('_')).map(([, t]) => normalizeTeam(t));
             const relevant = Object.entries(appData.matchResults || {}).filter(([, m]) => {
-                return myTeams.includes(m.teamA.toLowerCase()) || myTeams.includes(m.teamB.toLowerCase());
+                return myTeams.includes(normalizeTeam(m.teamA)) || myTeams.includes(normalizeTeam(m.teamB));
             });
             if (!relevant.length) return '<p style="color:#999">No matches involving your teams yet.</p>';
             return `<table class="detail-table">
@@ -2956,11 +3077,14 @@
                 const pts = ROUND_POINTS[m.round] || {};
                 const aWon = m.result === 'home'; const bWon = m.result === 'away'; const draw = m.result === 'draw';
                 let earned = 0; let winner = draw ? 'Draw' : aWon ? m.teamA : m.teamB;
-                if (myTeams.includes(m.teamA.toLowerCase()) && aWon) earned = pts.win || 0;
-                if (myTeams.includes(m.teamB.toLowerCase()) && bWon) earned = pts.win || 0;
-                if ((myTeams.includes(m.teamA.toLowerCase()) || myTeams.includes(m.teamB.toLowerCase())) && draw) earned = pts.draw || 0;
+                const scoreA = Number(m.scoreA || 0); const scoreB = Number(m.scoreB || 0);
+                if (myTeams.includes(normalizeTeam(m.teamA)) && aWon) { earned = pts.win || 0; if (pts.goal) earned += pts.goal * scoreA; }
+                if (myTeams.includes(normalizeTeam(m.teamB)) && bWon) { earned = pts.win || 0; if (pts.goal) earned += pts.goal * scoreB; }
+                if (myTeams.includes(normalizeTeam(m.teamA)) && draw) { earned = pts.draw || 0; if (pts.goal) earned += pts.goal * scoreA; }
+                if (myTeams.includes(normalizeTeam(m.teamB)) && draw) { earned = pts.draw || 0; if (pts.goal) earned += pts.goal * scoreB; }
+                const scoreStr = (scoreA !== null && m.scoreA !== undefined) ? ` (${scoreA}–${scoreB})` : '';
                 return `<tr>
-                <td>${esc(m.teamA)} vs ${esc(m.teamB)}</td>
+                <td>${esc(m.teamA)} vs ${esc(m.teamB)}${scoreStr}</td>
                 <td><span class="round-badge ${ROUND_CLASS[m.round]}">${ROUND_LABELS[m.round]}</span></td>
                 <td>${esc(winner)}</td>
                 <td style="text-align:right;font-weight:bold;color:${earned > 0 ? '#28a745' : '#999'}">${earned > 0 ? '+' + earned : '0'}</td>
@@ -3282,7 +3406,6 @@
         // ============================================================
         function startApiPollIfEnabled() {
             stopApiPoll();
-            if (!isAdmin) return; // Only admin drives the sync
             const c = appData.apiConfig;
             if (!c.enabled || c.mode !== 'espn') return;
             const interval = Math.max(60, c.interval || 90) * 1000;
@@ -3377,8 +3500,8 @@
         function findManualMatch(teamA, teamB) {
             return Object.entries(appData.matchResults || {}).find(([k, m]) => {
                 if (k.startsWith('espn-')) return false;
-                return (m.teamA.toLowerCase() === teamA.toLowerCase() && m.teamB.toLowerCase() === teamB.toLowerCase()) ||
-                    (m.teamA.toLowerCase() === teamB.toLowerCase() && m.teamB.toLowerCase() === teamA.toLowerCase());
+                return (normalizeTeam(m.teamA) === normalizeTeam(teamA) && normalizeTeam(m.teamB) === normalizeTeam(teamB)) ||
+                    (normalizeTeam(m.teamA) === normalizeTeam(teamB) && normalizeTeam(m.teamB) === normalizeTeam(teamA));
             });
         }
 
@@ -3486,7 +3609,18 @@
 
         function getMyTeams() {
             const picks = appData.picks[slugify(currentUser)] || {};
-            return Object.entries(picks).filter(([k]) => !k.startsWith('_')).map(([, t]) => t.toLowerCase());
+            return Object.entries(picks).filter(([k]) => !k.startsWith('_')).map(([, t]) => normalizeTeam(t));
+        }
+
+        function americanToFractional(ml) {
+            ml = parseInt(ml, 10);
+            if (isNaN(ml)) return null;
+            let num, den;
+            if (ml > 0) { num = ml; den = 100; }
+            else { num = 100; den = Math.abs(ml); }
+            const gcd = (a, b) => b ? gcd(b, a % b) : a;
+            const g = gcd(num, den);
+            return `${num / g}/${den / g}`;
         }
 
         function renderFixturesFromData() {
@@ -3499,7 +3633,7 @@
                 events = events.filter(e => {
                     const comp = e.competitions?.[0];
                     return comp && comp.competitors.some(c =>
-                        myTeams.includes((c.team.displayName || '').toLowerCase())
+                        myTeams.includes(normalizeTeam(c.team.displayName || ''))
                     );
                 });
             }
@@ -3520,10 +3654,7 @@
 
             const html = Object.entries(byDay).map(([day, dayEvents]) => {
                 const label = new Date(day + 'T12:00:00Z').toLocaleDateString('en-GB', {
-                    weekday: 'long',
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
+                    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
                 });
 
                 const rows = dayEvents.map(e => {
@@ -3534,48 +3665,66 @@
 
                     const hName = home.team.displayName;
                     const aName = away.team.displayName;
-                    const isMyH = myTeams.includes(hName.toLowerCase());
-                    const isMyA = myTeams.includes(aName.toLowerCase());
+                    const isMyH = myTeams.includes(normalizeTeam(hName));
+                    const isMyA = myTeams.includes(normalizeTeam(aName));
                     const isMyMatch = isMyH || isMyA;
 
                     const status = comp.status?.type || {};
                     const isLive = status.state === 'in';
                     const isFt = !!status.completed;
+                    const isPre = !isLive && !isFt;
 
-                    const score = `${home.score ?? ''}${(isFt || isLive) ? '-' : 'vs'}${away.score ?? ''}`;
                     const grp = teamGroup(hName) || teamGroup(aName);
 
                     const koTime = new Date(e.date).toLocaleTimeString('en-IE', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                        timeZone: 'Europe/Dublin'
+                        hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Dublin'
                     });
 
-                    const timeLabel = isFt
-                        ? 'FT'
-                        : isLive
-                            ? '<span class="fix-status-live">LIVE</span>'
-                            : `KO ${koTime}`;
-
-                    const rowClass = [
-                        'fixture-row',
-                        isMyMatch ? 'my-team' : '',
-                        isLive ? 'live' : '',
-                        isFt ? 'ft' : ''
-                    ].filter(Boolean).join(' ');
-
+                    const rowClass = ['fixture-row', isMyMatch ? 'my-team' : '', isLive ? 'live' : '', isFt ? 'ft' : ''].filter(Boolean).join(' ');
                     const scoreClass = isLive ? 'fix-score live-score' : 'fix-score';
+                    const liveLabel = `<span class="fix-status-live">LIVE</span>`;
+                    const centre = isFt
+                        ? `<div class="${scoreClass}">${home.score}-${away.score}<br><span style="font-size:0.65em;font-weight:600;color:var(--text-light)">FT</span></div>`
+                        : isLive
+                            ? `<div class="${scoreClass}">${home.score}-${away.score}<br>${liveLabel}</div>`
+                            : `<div class="fix-score">vs</div>`;
 
-                    return `
-                <div class="${rowClass}">
-                    <div class="fix-home">${isMyH ? '<strong>' : ''}${countryFlag(hName)} ${esc(hName)}${isMyH ? '</strong>' : ''}</div>
-                    <div class="${scoreClass}">${isFt || isLive ? score : 'vs'}</div>
-                    <div class="fix-away">${isMyA ? '<strong>' : ''}${esc(aName)} ${countryFlag(aName)}${isMyA ? '</strong>' : ''}</div>
-                    <div class="fix-time">${timeLabel}</div>
-                    ${grp ? `<div class="fix-group">Grp ${grp}</div>` : '<div></div>'}
-                </div>
-            `;
+                    let hOdds = '', aOdds = '', drawOdds = '';
+                    if (isPre) {
+                        const oddsObj = comp.odds?.[0];
+                        const hML = oddsObj?.moneyline?.home?.close?.odds;
+                        const aML = oddsObj?.moneyline?.away?.close?.odds;
+                        const dML = oddsObj?.drawOdds?.moneyLine;
+                        if (hML || aML || dML) {
+                            const hFrac = hML ? americanToFractional(hML) : null;
+                            const aFrac = aML ? americanToFractional(aML) : null;
+                            const dFrac = dML ? americanToFractional(dML) : null;
+                            const toDecimal = ml => parseInt(ml) > 0 ? parseInt(ml) / 100 + 1 : 100 / Math.abs(parseInt(ml)) + 1;
+                            const favH = (hML && aML) ? toDecimal(hML) <= toDecimal(aML) : !!hML;
+                            hOdds = hFrac ? `<span class="fix-odds-val${favH ? ' fav' : ''}">${hFrac}</span>` : '';
+                            aOdds = aFrac ? `<span class="fix-odds-val${!favH ? ' fav' : ''}">${aFrac}</span>` : '';
+                            drawOdds = dFrac ? `<div class="fix-odds-draw"><span class="fix-odds-draw-label">Draw</span><span class="fix-odds-val">${dFrac}</span></div>` : '';
+                        }
+                    }
+
+                    const matchRow = `
+                        <div class="fix-matchrow">
+                            <div class="fix-home">
+                                <span>${isMyH ? '<strong>' : ''}${countryFlag(hName)} ${esc(hName)}${isMyH ? '</strong>' : ''}</span>
+                                ${hOdds}
+                            </div>
+                            <div class="fix-centre">
+                                ${isPre ? `<div class="fix-topbar-inner"><span class="fix-ko-time">KO ${koTime}</span>${grp ? `<span class="fix-group">Grp ${grp}</span>` : ''}</div>` : ''}
+                                ${centre}
+                                ${drawOdds}
+                            </div>
+                            <div class="fix-away">
+                                <span>${isMyA ? '<strong>' : ''}${esc(aName)} ${countryFlag(aName)}${isMyA ? '</strong>' : ''}</span>
+                                ${aOdds}
+                            </div>
+                        </div>`;
+
+                    return `<div class="${rowClass}">${matchRow}</div>`;
                 }).join('');
 
                 return `<div class="fixture-day"><div class="fixture-day-header">${label}</div>${rows}</div>`;
@@ -3617,7 +3766,7 @@
                 };
                 const rows = entries.map(e => {
                     const tName = e.team.displayName;
-                    const isMy = myTeams.includes(tName.toLowerCase());
+                    const isMy = myTeams.includes(normalizeTeam(tName));
                     const pts = getStat(e, 'points');
                     const gp = getStat(e, 'gamesPlayed');
                     const w = getStat(e, 'wins');
@@ -3921,6 +4070,8 @@
                 'iraq': 'iq',
                 'uzbekistan': 'uz',
                 'curacao': 'cw',
+                'curaçao': 'cw',
+                'bosnia & herzegovina': 'ba',
                 'congo dr': 'cd',
                 'dr congo': 'cd',
                 'cape verde': 'cv'
