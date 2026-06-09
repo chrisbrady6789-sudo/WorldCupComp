@@ -935,97 +935,331 @@
         }
 
         /* ============ INSIGHTS ============ */
-        .oracle-card {
-            background: linear-gradient(135deg, #0b1635 0%, #180b35 100%);
-            border: 1px solid rgba(139, 92, 246, 0.4);
+        .dup-alert {
+            background: linear-gradient(135deg, #fff7ed 0%, #fffbeb 100%);
+            border: 2px solid #fbbf24;
             border-radius: 12px;
-            padding: 22px;
+            padding: 18px 22px;
             margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
         }
 
-        .oracle-card::before {
+        .dup-alert h3 {
+            color: #92400e;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dup-team-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fef3c7;
+            border: 1.5px solid #fbbf24;
+            border-radius: 20px;
+            padding: 3px 11px;
+            font-size: 0.82em;
+            font-weight: 700;
+            color: #92400e;
+            margin: 3px 4px;
+        }
+
+        .insight-section-title {
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin: 24px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-section-title::after {
             content: '';
-            position: absolute;
-            top: -40%;
-            left: -20%;
-            width: 140%;
-            height: 200%;
-            background: radial-gradient(ellipse, rgba(139, 92, 246, 0.07) 0%, transparent 60%);
-            pointer-events: none;
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
 
-        .oracle-header {
+        .stat-chip-accent {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+            border: none;
+        }
+
+        .stat-chip-accent .chip-val {
+            color: var(--gold);
+        }
+
+        .stat-chip-accent .chip-label {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .stat-chip-green {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-color: #86efac;
+        }
+
+        .stat-chip-green .chip-val { color: #15803d; }
+        .stat-chip-green .chip-label { color: #166534; }
+
+        /* ---- Bracket pick charts ---- */
+        .bracket-charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 4px;
+        }
+
+        .bracket-chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .bracket-chart-title {
+            font-size: 0.78em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-mid);
+            margin-bottom: 10px;
+        }
+
+        .donut-wrap {
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
+            margin-bottom: 10px;
         }
 
-        .oracle-avatar {
-            width: 46px;
-            height: 46px;
-            min-width: 46px;
-            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        .donut-svg {
+            flex-shrink: 0;
+        }
+
+        .donut-legend {
+            font-size: 0.78em;
+            color: var(--text-mid);
+            line-height: 1.7;
+        }
+
+        .donut-legend-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .bracket-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 6px;
+            font-size: 0.82em;
+        }
+
+        .bracket-bar-label {
+            flex: 0 0 130px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text);
+        }
+
+        .bracket-bar-track {
+            flex: 1;
+            background: var(--border);
+            border-radius: 3px;
+            height: 7px;
+            overflow: hidden;
+        }
+
+        .bracket-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+
+        .bracket-bar-pct {
+            flex: 0 0 30px;
+            text-align: right;
+            color: var(--text-light);
+            font-size: 0.85em;
+        }
+
+        .overall-donut-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4em;
-            animation: oracle-glow 3s ease-in-out infinite;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-bottom: 0;
         }
 
-        @keyframes oracle-glow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 16px rgba(124, 58, 237, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 0 30px rgba(124, 58, 237, 0.75);
-            }
-        }
-
-        .oracle-title {
-            font-weight: 700;
-            color: #c4b5fd;
-            font-size: 1em;
-        }
-
-        .oracle-subtitle {
-            font-size: 0.74em;
-            color: rgba(196, 181, 253, 0.55);
-            margin-top: 2px;
-        }
-
-        .oracle-refresh {
-            margin-left: auto;
-            background: rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(139, 92, 246, 0.35);
-            color: #c4b5fd;
-            padding: 6px 14px;
-            border-radius: 20px;
-            cursor: pointer;
+        .overall-donut-legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 20px;
             font-size: 0.82em;
-            transition: all 0.2s;
+            color: var(--text-mid);
+        }
+
+        .overall-donut-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .overall-donut-legend-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ---- Tournament Form ---- */
+        .form-toggle-btn {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-mid);
+            transition: all 0.15s;
+        }
+
+        .form-toggle-btn.active {
+            background: var(--navy-mid);
+            border-color: var(--navy-mid);
+            color: white;
+        }
+
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            margin-top: 4px;
+        }
+
+        .form-table th {
+            text-align: left;
+            padding: 7px 10px;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border);
             white-space: nowrap;
         }
 
-        .oracle-refresh:hover {
-            background: rgba(139, 92, 246, 0.3);
+        .form-table th.right, .form-table td.right {
+            text-align: right;
         }
 
-        .oracle-text {
-            color: rgba(255, 255, 255, 0.82);
-            line-height: 1.85;
-            font-size: 0.95em;
-            font-style: italic;
-            padding-left: 14px;
-            border-left: 2px solid rgba(139, 92, 246, 0.4);
-            min-height: 36px;
+        .form-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .form-table tr:last-child td { border-bottom: none; }
+        .form-table tr:hover td { background: #f5f8ff; }
+
+        .form-pips {
+            display: flex;
+            gap: 3px;
+        }
+
+        .pip {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .pip-w { background: #22c55e; }
+        .pip-d { background: #f59e0b; }
+        .pip-l { background: #e2e8f0; }
+
+        .form-rank {
+            font-weight: 800;
+            color: var(--text-light);
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .form-rank-top { color: var(--gold-dark); }
+
+        .bar-teal {
+            background: linear-gradient(90deg, var(--teal), #06b6d4);
+        }
+
+        .bar-purple {
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+        }
+
+        .bar-green {
+            background: linear-gradient(90deg, #16a34a, #22c55e);
+        }
+
+        .stat-pct {
+            font-size: 0.75em;
+            color: var(--text-light);
+            min-width: 32px;
+            text-align: right;
+        }
+
+        .scorer-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 12px;
+            background: var(--card-bg2);
+            border-radius: 7px;
+            margin-bottom: 7px;
+            border: 1px solid var(--border);
+            font-size: 0.88em;
+        }
+
+        .scorer-row .scorer-name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .scorer-row .scorer-flag {
+            font-size: 1.2em;
+        }
+
+        .scorer-count-badge {
+            background: var(--navy-mid);
+            color: var(--gold);
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: 0.75em;
+            font-weight: 700;
+        }
+
+        .consensus-badge {
+            font-size: 0.7em;
+            padding: 2px 9px;
+            border-radius: 20px;
+            font-weight: 700;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fbbf24;
         }
 
         .stats-strip {
@@ -1230,7 +1464,6 @@
         .snap-bar {
             height: 100%;
             border-radius: 3px;
-            background: linear-gradient(90deg, var(--gold-dark), #f97316);
         }
 
         @media (max-width: 768px) {
@@ -1240,10 +1473,6 @@
 
             .stats-strip {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .oracle-refresh {
-                margin-left: 0;
             }
         }
 
@@ -2002,29 +2231,32 @@
         <!-- Insights Page -->
         <div id="insightsPage" class="container hidden">
 
-            <!-- AI Oracle -->
-            <div class="oracle-card">
-                <div class="oracle-header">
-                    <div class="oracle-avatar">🔮</div>
-                    <div>
-                        <div class="oracle-title">The Oracle</div>
-                        <div class="oracle-subtitle">Live tournament analysis</div>
-                    </div>
-                    <button class="oracle-refresh" onclick="renderOracleInsight()">↻ New insight</button>
-                </div>
-                <div class="oracle-text" id="oracleText">Consulting the data...</div>
-            </div>
+            <!-- Duplicate teams alert (shown if applicable) -->
+            <div id="dupTeamsAlert" class="dup-alert hidden"></div>
 
             <!-- Stat chips -->
             <div class="stats-strip" id="insightStats"></div>
 
             <!-- Charts grid -->
             <div class="insights-grid">
-                <div class="insight-card">
-                    <h3>📊 Most Popular Picks</h3>
-                    <div id="popularityChart">
+                <div class="insight-card" style="grid-column: 1 / -1;">
+                    <h3>🌍 Overall Pick Distribution</h3>
+                    <div id="overallDonutCard">
                         <p class="no-data">No picks yet.</p>
                     </div>
+                    <div class="insight-section-title" style="margin-top:20px">By Bracket</div>
+                    <div class="bracket-charts-grid" id="bracketChartsGrid">
+                        <p class="no-data">No picks yet.</p>
+                    </div>
+                </div>
+                <div class="insight-card" style="grid-column: 1 / -1;">
+                    <h3>📈 Tournament Form
+                        <span style="float:right;display:flex;gap:6px">
+                            <button class="form-toggle-btn active" id="formBtnAll" onclick="setFormFilter('all')">All Teams</button>
+                            <button class="form-toggle-btn" id="formBtnMine" onclick="setFormFilter('mine')">My Picks</button>
+                        </span>
+                    </h3>
+                    <div id="tournamentForm"><p class="no-data">No match results yet.</p></div>
                 </div>
                 <div class="insight-card">
                     <h3>⚡ Top Scoring Teams</h3>
@@ -2036,6 +2268,12 @@
                     <h3>🎯 Pick Analysis</h3>
                     <div id="hotPicks">
                         <p class="no-data">No data yet.</p>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <h3>⚽ Top Goalscorer Picks</h3>
+                    <div id="goalscorerChart">
+                        <p class="no-data">No picks yet.</p>
                     </div>
                 </div>
                 <div class="insight-card">
@@ -3798,65 +4036,290 @@
         // INSIGHTS
         // ============================================================
         function renderInsights() {
-            renderOracleInsight();
+            renderDupTeamsAlert();
             renderStatsStrip();
-            renderPopularityChart();
+            renderPickDistribution();
+            renderTournamentForm('all');
             renderTopScoringTeams();
             renderHotPicks();
+            renderGoalscorerChart();
             renderStandingsSnap();
+        }
+
+        let formFilter = 'all';
+
+        function setFormFilter(mode) {
+            formFilter = mode;
+            document.getElementById('formBtnAll').classList.toggle('active', mode === 'all');
+            document.getElementById('formBtnMine').classList.toggle('active', mode === 'mine');
+            renderTournamentForm(mode);
+        }
+
+        function renderTournamentForm(mode) {
+            const el = document.getElementById('tournamentForm');
+            if (!el) return;
+            const results = Object.values(appData.matchResults || {});
+            if (!results.length) { el.innerHTML = '<p class="no-data">No match results yet.</p>'; return; }
+
+            // Build per-team stats
+            const stats = {}; // teamName -> { w, d, l, gf, ga, matches: [] }
+            results.forEach(m => {
+                const { teamA, teamB, result, scoreA = 0, scoreB = 0 } = m;
+                [teamA, teamB].forEach(t => { if (t && !stats[t]) stats[t] = { w: 0, d: 0, l: 0, gf: 0, ga: 0, recent: [] }; });
+                if (!teamA || !teamB) return;
+                const aWon = result === 'home', bWon = result === 'away', draw = result === 'draw';
+                stats[teamA].gf += Number(scoreA); stats[teamA].ga += Number(scoreB);
+                stats[teamB].gf += Number(scoreB); stats[teamB].ga += Number(scoreA);
+                if (aWon) { stats[teamA].w++; stats[teamA].recent.push('W'); stats[teamB].l++; stats[teamB].recent.push('L'); }
+                else if (bWon) { stats[teamB].w++; stats[teamB].recent.push('W'); stats[teamA].l++; stats[teamA].recent.push('L'); }
+                else { stats[teamA].d++; stats[teamA].recent.push('D'); stats[teamB].d++; stats[teamB].recent.push('D'); }
+            });
+
+            // Determine which teams to show
+            let teams = Object.keys(stats);
+            if (mode === 'mine') {
+                const myKey = slugify(currentUser);
+                const myPicks = appData.picks[myKey] || {};
+                const myTeamNames = Object.entries(myPicks).filter(([k]) => !k.startsWith('_')).map(([, t]) => (t || '').toLowerCase());
+                teams = teams.filter(t => myTeamNames.includes(t.toLowerCase()));
+            }
+
+            if (!teams.length) {
+                el.innerHTML = mode === 'mine'
+                    ? '<p class="no-data">None of your picks have played yet.</p>'
+                    : '<p class="no-data">No match results yet.</p>';
+                return;
+            }
+
+            // Sort: by win% then GD then GF
+            teams.sort((a, b) => {
+                const sa = stats[a], sb = stats[b];
+                const pa = sa.w * 3 + sa.d, pb = sb.w * 3 + sb.d;
+                if (pb !== pa) return pb - pa;
+                const gda = sa.gf - sa.ga, gdb = sb.gf - sb.ga;
+                if (gdb !== gda) return gdb - gda;
+                return sb.gf - sa.gf;
+            });
+
+            const rows = teams.map((team, i) => {
+                const s = stats[team];
+                const played = s.w + s.d + s.l;
+                const pts = s.w * 3 + s.d;
+                const gd = s.gf - s.ga;
+                const gdStr = gd > 0 ? '+' + gd : String(gd);
+                // Show last 5 results as coloured pips
+                const recent = s.recent.slice(-5);
+                const pips = recent.map(r => `<span class="pip pip-${r.toLowerCase()}"></span>`).join('');
+                const rankClass = i < 3 ? 'form-rank form-rank-top' : 'form-rank';
+                const isTopForm = s.w > 0 && i < 3;
+                return `<tr>
+                    <td><span class="${rankClass}">${i + 1}</span></td>
+                    <td>${countryFlag(team)} ${esc(team)}${isTopForm ? ' <span style="font-size:0.8em">🔥</span>' : ''}</td>
+                    <td class="right" style="color:var(--text-mid)">${played}</td>
+                    <td class="right" style="color:#22c55e;font-weight:700">${s.w}</td>
+                    <td class="right" style="color:#f59e0b;font-weight:700">${s.d}</td>
+                    <td class="right" style="color:#ef4444;font-weight:700">${s.l}</td>
+                    <td class="right">${s.gf}:${s.ga}</td>
+                    <td class="right" style="color:${gd > 0 ? '#22c55e' : gd < 0 ? '#ef4444' : 'inherit'};font-weight:600">${gdStr}</td>
+                    <td class="right" style="font-weight:800;color:var(--navy-mid)">${pts}</td>
+                    <td><div class="form-pips">${pips}</div></td>
+                </tr>`;
+            }).join('');
+
+            el.innerHTML = `<div style="overflow-x:auto">
+                <table class="form-table">
+                    <thead><tr>
+                        <th></th>
+                        <th>Team</th>
+                        <th class="right">P</th>
+                        <th class="right">W</th>
+                        <th class="right">D</th>
+                        <th class="right">L</th>
+                        <th class="right">GF:GA</th>
+                        <th class="right">GD</th>
+                        <th class="right">Pts</th>
+                        <th>Form</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
+        }
+
+        // Palette of 12 distinct colours for teams/brackets
+        const CHART_COLOURS = [
+            '#3b82f6','#f59e0b','#10b981','#ef4444','#8b5cf6',
+            '#06b6d4','#f97316','#84cc16','#ec4899','#14b8a6',
+            '#a855f7','#6366f1'
+        ];
+
+        function buildDonutSVG(slices, size) {
+            // slices: [{pct, colour}], pct 0-100, size = diameter
+            const r = size / 2 - 6;
+            const cx = size / 2, cy = size / 2;
+            const circ = 2 * Math.PI * r;
+            let paths = '', offset = -0.25 * circ; // start at 12 o'clock
+            slices.forEach(({ pct, colour }) => {
+                const len = circ * pct / 100;
+                paths += `<circle r="${r}" cx="${cx}" cy="${cy}" fill="none" stroke="${colour}" stroke-width="11" stroke-dasharray="${len} ${circ - len}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
+                offset += len;
+            });
+            // inner white hole
+            paths += `<circle r="${r - 9}" cx="${cx}" cy="${cy}" fill="white"/>`;
+            return `<svg class="donut-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg>`;
+        }
+
+        function renderPickDistribution() {
+            const brackets = appData.brackets;
+            const picks = appData.picks;
+            const totalPlayers = Object.keys(picks).length;
+
+            // Count picks per team overall and per bracket
+            const overallCounts = {};
+            const bracketCounts = {}; // bracketKey -> { teamName -> count }
+
+            Object.values(picks).forEach(p => {
+                Object.entries(p).forEach(([k, team]) => {
+                    if (k.startsWith('_') || !team) return;
+                    overallCounts[team] = (overallCounts[team] || 0) + 1;
+                    if (!bracketCounts[k]) bracketCounts[k] = {};
+                    bracketCounts[k][team] = (bracketCounts[k][team] || 0) + 1;
+                });
+            });
+
+            const overallEl = document.getElementById('overallDonutCard');
+            const bracketEl = document.getElementById('bracketChartsGrid');
+
+            if (!totalPlayers) {
+                overallEl.innerHTML = '<p class="no-data">No picks yet.</p>';
+                bracketEl.innerHTML = '';
+                return;
+            }
+
+            // ---- Overall donut ----
+            const overallSorted = Object.entries(overallCounts).sort((a, b) => b[1] - a[1]);
+            const overallTotal = overallSorted.reduce((s, [, n]) => s + n, 0) || 1;
+            const topN = overallSorted.slice(0, 12);
+            const otherCount = overallSorted.slice(12).reduce((s, [, n]) => s + n, 0);
+            const donutSlices = topN.map(([, n], i) => ({ pct: n / overallTotal * 100, colour: CHART_COLOURS[i] }));
+            if (otherCount) donutSlices.push({ pct: otherCount / overallTotal * 100, colour: '#cbd5e1' });
+
+            const legendItems = topN.map(([team, n], i) => `
+                <div class="overall-donut-legend-item">
+                    <span class="overall-donut-legend-dot" style="background:${CHART_COLOURS[i]}"></span>
+                    <span>${countryFlag(team)} ${esc(team)} <span style="color:var(--text-light);font-size:0.9em">${Math.round(n / totalPlayers * 100)}%</span></span>
+                </div>`).join('');
+
+            overallEl.innerHTML = `
+                <div class="overall-donut-card">
+                    ${buildDonutSVG(donutSlices, 120)}
+                    <div class="overall-donut-legend">${legendItems}</div>
+                </div>`;
+
+            // ---- Per-bracket mini charts ----
+            const bracketKeys = Object.keys(brackets).sort();
+            bracketEl.innerHTML = bracketKeys.map(bk => {
+                const bracket = brackets[bk];
+                const teams = bracket.teams || [];
+                const bCounts = bracketCounts[bk] || {};
+                const bTotal = Object.values(bCounts).reduce((s, n) => s + n, 0) || 1;
+
+                // Assign colours to teams (consistent per bracket)
+                const teamColours = {};
+                teams.forEach((t, i) => { teamColours[t] = CHART_COLOURS[i % CHART_COLOURS.length]; });
+
+                const slices = teams.map((t, i) => ({
+                    pct: ((bCounts[t] || 0) / bTotal * 100),
+                    colour: teamColours[t]
+                }));
+
+                const barRows = teams.sort((a, b) => (bCounts[b] || 0) - (bCounts[a] || 0)).map(team => {
+                    const n = bCounts[team] || 0;
+                    const pct = Math.round(n / Math.max(totalPlayers, 1) * 100);
+                    const barW = Math.round(n / bTotal * 100);
+                    return `<div class="bracket-bar-row">
+                        <span class="bracket-bar-label">${countryFlag(team)} ${esc(team)}</span>
+                        <div class="bracket-bar-track"><div class="bracket-bar-fill" style="width:${barW}%;background:${teamColours[team]}"></div></div>
+                        <span class="bracket-bar-pct">${pct}%</span>
+                    </div>`;
+                }).join('');
+
+                return `<div class="bracket-chart-card">
+                    <div class="bracket-chart-title">${esc(bracket.name)}</div>
+                    <div class="donut-wrap">
+                        ${buildDonutSVG(slices, 68)}
+                        <div class="donut-legend">
+                            ${teams.map(t => `<div><span class="donut-legend-dot" style="background:${teamColours[t]}"></span>${countryFlag(t)} ${esc(t)}</div>`).join('')}
+                        </div>
+                    </div>
+                    ${barRows}
+                </div>`;
+            }).join('');
+        }
+
+        function renderDupTeamsAlert() {
+            const el = document.getElementById('dupTeamsAlert');
+            if (!el) return;
+            const allDups = [];
+            Object.entries(appData.picks).forEach(([key, picks]) => {
+                const teams = Object.entries(picks).filter(([k]) => !k.startsWith('_')).map(([, t]) => t).filter(Boolean);
+                const seen = {}, dups = new Set();
+                teams.forEach(t => { const n = (t || '').toLowerCase(); if (seen[n]) dups.add(t); seen[n] = true; });
+                if (dups.size) {
+                    const name = picks._username || key;
+                    allDups.push({ name, dups: [...dups] });
+                }
+            });
+            if (!allDups.length) { el.classList.add('hidden'); return; }
+            el.classList.remove('hidden');
+            el.innerHTML = `<h3>⚠️ Duplicate Teams Detected</h3>
+                <p style="font-size:0.85em;color:#92400e;margin-bottom:10px">Some players have the same team selected in more than one bracket — they'll only score points once per team per match.</p>
+                ${allDups.map(({ name, dups }) => `<div style="margin-bottom:6px"><strong style="font-size:0.85em">${esc(name)}:</strong> ${dups.map(t => `<span class="dup-team-tag">${countryFlag(t)} ${esc(t)}</span>`).join('')}</div>`).join('')}`;
         }
 
         function renderStatsStrip() {
             const scores = getAllScores();
             const totalMatches = Object.keys(appData.matchResults || {}).length;
             const maxPts = scores.length ? scores[0].total : 0;
+            const minPts = scores.length ? scores[scores.length - 1].total : 0;
+            const avgPts = scores.length ? Math.round(scores.reduce((s, p) => s + p.total, 0) / scores.length) : 0;
             const myScore = scores.find(s => s.key === slugify(currentUser));
             const myRank = myScore ? scores.indexOf(myScore) + 1 : null;
+            const gapToTop = myScore && myScore.total < maxPts ? maxPts - myScore.total : 0;
             document.getElementById('insightStats').innerHTML = `
-        <div class="stat-chip"><div class="chip-val">${scores.length}</div><div class="chip-label">Players</div></div>
-        <div class="stat-chip"><div class="chip-val">${totalMatches}</div><div class="chip-label">Matches</div></div>
-        <div class="stat-chip"><div class="chip-val">${maxPts}</div><div class="chip-label">Top Score</div></div>
-        ${myRank ? `<div class="stat-chip"><div class="chip-val">#${myRank}</div><div class="chip-label">Your Rank</div></div>` : ''}
+        <div class="stat-chip stat-chip-accent"><div class="chip-val">${scores.length}</div><div class="chip-label">Players</div></div>
+        <div class="stat-chip"><div class="chip-val">${totalMatches}</div><div class="chip-label">Matches Played</div></div>
+        <div class="stat-chip stat-chip-accent"><div class="chip-val">${maxPts}</div><div class="chip-label">Top Score</div></div>
+        <div class="stat-chip"><div class="chip-val">${avgPts}</div><div class="chip-label">Avg Score</div></div>
+        ${myRank ? `<div class="stat-chip stat-chip-green"><div class="chip-val">#${myRank}</div><div class="chip-label">Your Rank</div></div>` : ''}
+        ${myRank && gapToTop > 0 ? `<div class="stat-chip"><div class="chip-val">${gapToTop}</div><div class="chip-label">Pts to Top</div></div>` : ''}
+        ${scores.length > 1 ? `<div class="stat-chip"><div class="chip-val">${maxPts - minPts}</div><div class="chip-label">Top-Bottom Gap</div></div>` : ''}
     `;
         }
 
-        function renderPopularityChart() {
-            const counts = {};
-            Object.values(appData.picks).forEach(picks => {
-                Object.entries(picks).forEach(([k, team]) => {
-                    if (!k.startsWith('_') && team) counts[team] = (counts[team] || 0) + 1;
-                });
-            });
-            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
-            const max = sorted.length ? sorted[0][1] : 1;
-            const el = document.getElementById('popularityChart');
-            if (!sorted.length) { el.innerHTML = '<p class="no-data">No picks yet.</p>'; return; }
-            el.innerHTML = sorted.map(([team, n]) => `
-        <div class="stat-row">
-            <span class="stat-label">${countryFlag(team)} ${esc(team)}</span>
-            <div class="stat-bar-wrap"><div class="stat-bar bar-blue" style="width:${Math.round(n / max * 100)}%"></div></div>
-            <span class="stat-val">${n}</span>
-        </div>`).join('');
-        }
-
         function renderTopScoringTeams() {
-            const teamPts = {};
+            const teamPts = {}, teamCount = {};
             Object.keys(appData.picks).forEach(key => {
                 const { breakdown } = computePlayerPoints(key);
+                const picks = appData.picks[key] || {};
                 Object.entries(breakdown).forEach(([team, pts]) => {
                     teamPts[team] = (teamPts[team] || 0) + pts;
+                    teamCount[team] = (teamCount[team] || 0) + 1;
                 });
             });
             const sorted = Object.entries(teamPts).sort((a, b) => b[1] - a[1]).slice(0, 6);
             const max = sorted.length ? sorted[0][1] : 1;
             const el = document.getElementById('topTeamsChart');
             if (!sorted.length) { el.innerHTML = '<p class="no-data">No results yet.</p>'; return; }
-            el.innerHTML = sorted.map(([team, pts]) => `
-        <div class="stat-row">
+            el.innerHTML = sorted.map(([team, pts], i) => {
+                const avg = teamCount[team] ? Math.round(pts / teamCount[team] * 10) / 10 : 0;
+                const barClass = i === 0 ? 'bar-gold' : i < 3 ? 'bar-teal' : 'bar-purple';
+                return `<div class="stat-row">
             <span class="stat-label">${countryFlag(team)} ${esc(team)}</span>
-            <div class="stat-bar-wrap"><div class="stat-bar bar-gold" style="width:${Math.round(pts / max * 100)}%"></div></div>
+            <div class="stat-bar-wrap"><div class="stat-bar ${barClass}" style="width:${Math.round(pts / max * 100)}%"></div></div>
             <span class="stat-val">${pts}</span>
-        </div>`).join('');
+            <span class="stat-pct" title="avg per player">${avg}/pl</span>
+        </div>`;
+            }).join('');
         }
 
         function renderHotPicks() {
@@ -3893,78 +4356,53 @@
             }).join('');
         }
 
+        function renderGoalscorerChart() {
+            const el = document.getElementById('goalscorerChart');
+            if (!el) return;
+            const counts = {};
+            const totalPlayers = Object.keys(appData.picks).length || 1;
+            Object.values(appData.picks).forEach(picks => {
+                const scorer = picks._topGoalscorer;
+                if (scorer) counts[scorer] = (counts[scorer] || 0) + 1;
+            });
+            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+            if (!sorted.length) { el.innerHTML = '<p class="no-data">No goalscorer picks yet.</p>'; return; }
+            const max = sorted[0][1];
+            el.innerHTML = sorted.map(([scorer, n], i) => {
+                const pct = Math.round(n / totalPlayers * 100);
+                const barClass = i === 0 ? 'bar-gold' : i < 3 ? 'bar-green' : 'bar-teal';
+                const consensus = pct >= 40 ? '<span class="consensus-badge">🌟 Crowd favourite</span>' : '';
+                return `<div class="stat-row" style="flex-wrap:wrap;gap:5px">
+            <span class="stat-label" style="min-width:120px">${esc(scorer)}</span>
+            <div class="stat-bar-wrap"><div class="stat-bar ${barClass}" style="width:${Math.round(n / max * 100)}%"></div></div>
+            <span class="stat-val">${n}</span>
+            <span class="stat-pct">${pct}%</span>
+            ${consensus}
+        </div>`;
+            }).join('');
+        }
+
         function renderStandingsSnap() {
-            const scores = getAllScores().slice(0, 6);
+            const scores = getAllScores();
             const max = scores.length ? scores[0].total : 1;
             const el = document.getElementById('standingsSnap');
             if (!scores.length) { el.innerHTML = '<p class="no-data">No entries yet.</p>'; return; }
             const medals = ['🥇', '🥈', '🥉'];
-            el.innerHTML = scores.map((p, i) => `
-        <div class="snap-row">
+            const myKey = slugify(currentUser);
+            el.innerHTML = scores.map((p, i) => {
+                const isMe = p.key === myKey;
+                const barPct = max ? Math.round(p.total / max * 100) : 0;
+                const barColor = i === 0 ? 'bar-gold' : isMe ? 'bar-green' : 'bar-blue';
+                return `<div class="snap-row" style="${isMe ? 'background:#f0fdf4;border-radius:6px;padding:8px 6px;margin:-2px -6px;' : ''}">
             <span class="snap-rank">${medals[i] || (i + 1)}</span>
-            <span class="snap-name">${esc(p.displayName)}</span>
-            <div class="snap-bar-wrap"><div class="snap-bar" style="width:${max ? Math.round(p.total / max * 100) : 0}%"></div></div>
+            <span class="snap-name" style="${isMe ? 'font-weight:800;color:#15803d' : ''}">${esc(p.displayName)}${isMe ? ' 👈' : ''}</span>
+            <div class="snap-bar-wrap"><div class="snap-bar ${barColor}" style="width:${barPct}%;height:100%;border-radius:3px;"></div></div>
             <span class="snap-pts">${p.total} pts</span>
-        </div>`).join('');
+        </div>`;
+            }).join('');
         }
 
-        function renderOracleInsight() {
-            const el = document.getElementById('oracleText');
-            if (!el) return;
-            el.textContent = generateOracleText();
-        }
-
-        function generateOracleText() {
-            const scores = getAllScores();
-            const totalMatches = Object.keys(appData.matchResults || {}).length;
-            const myScore = scores.find(s => s.key === slugify(currentUser));
-            const myPicks = myScore ? Object.entries(appData.picks[myScore.key] || {}).filter(([k]) => !k.startsWith('_')).map(([, t]) => t) : [];
-            const myRank = myScore ? scores.indexOf(myScore) + 1 : null;
-
-            if (!scores.length) return 'No players have entered yet. Once picks are in, I\'ll have plenty to say...';
-
-            // Pre-tournament insight (group-aware)
-            if (totalMatches === 0) {
-                if (myPicks.length) {
-                    const groupList = [...new Set(myPicks.map(t => teamGroup(t)).filter(Boolean))].sort();
-                    const sharedGroup = myPicks.filter((t, _, arr) => arr.filter(x => teamGroup(x) === teamGroup(t)).length > 1);
-                    if (sharedGroup.length >= 2) {
-                        const g = teamGroup(sharedGroup[0]);
-                        return `Heads up — you have ${sharedGroup.map(t => countryFlag(t) + ' ' + t).join(' and ')} both in Group ${g}. Only one can top the group, so their fates are linked.`;
-                    }
-                    return `You're covering ${groupList.length} different group${groupList.length !== 1 ? 's' : ''} (${groupList.map(g => 'Group ' + g).join(', ')}). The tournament kicks off 11 June — the fates are unwritten.`;
-                }
-                return `${scores.length} player${scores.length !== 1 ? 's have' : ' has'} entered. The tournament begins 11 June — all ${scores.length} of you are still level on zero.`;
-            }
-
-            const leader = scores[0];
-            const teamPts = {};
-            scores.forEach(({ key }) => {
-                const { breakdown } = computePlayerPoints(key);
-                Object.entries(breakdown).forEach(([team, pts]) => { teamPts[team] = (teamPts[team] || 0) + pts; });
-            });
-            const topTeam = Object.entries(teamPts).sort((a, b) => b[1] - a[1])[0];
-
-            const pool = [
-                `${esc(leader.displayName)} leads with ${leader.total} pts — ${scores.length > 1 ? (leader.total - scores[1].total) + ' ahead of ' + esc(scores[1].displayName) : 'the only scorer so far'}.`,
-                topTeam && topTeam[1] > 0
-                    ? `${countryFlag(topTeam[0])} ${esc(topTeam[0])} (Group ${teamGroup(topTeam[0]) || '?'}) has been the standout team — generating ${topTeam[1]} pts across all players combined.`
-                    : null,
-                myRank === 1
-                    ? 'You\'re top of the table. Stay humble — a red card away from the tournament can change everything in minutes.'
-                    : myRank
-                        ? `You\'re #${myRank} — ${scores[0].total - myScore.total} point${scores[0].total - myScore.total !== 1 ? 's' : ''} behind ${esc(leader.displayName)}. The knockout rounds are where fortunes flip.`
-                        : null,
-                myPicks.length
-                    ? `Your teams span ${[...new Set(myPicks.map(t => teamGroup(t)).filter(Boolean))].length} groups. ${myPicks.filter(t => teamGroup(t)).map(t => countryFlag(t) + ' ' + t + ' (Grp ' + teamGroup(t) + ')').join(', ')}.`
-                    : null,
-                scores.length > 2
-                    ? `${scores.length} players are in this comp. The gap from top to bottom is ${scores[0].total - scores[scores.length - 1].total} pts — still very much alive.`
-                    : null,
-            ].filter(Boolean);
-
-            return pool[Math.floor(Math.random() * pool.length)] || 'The oracle is watching...';
-        }
+        function renderOracleInsight() { /* removed */ }
 
         // ============================================================
         // HELPERS
