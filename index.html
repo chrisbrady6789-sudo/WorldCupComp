@@ -3290,11 +3290,23 @@
                 return `<tr><td>${esc(bracketName)}</td><td>${countryFlag(team)} ${esc(team)}</td><td class="pts-col">${pts}</td></tr>`;
             }).join('');
 
+            const scorer = p._topGoalscorer;
+            const scorerWinner = appData.settings.topGoalscorerWinner;
+            const scorerBonusPts = breakdown['Top Goalscorer Bonus'] || 0;
+            let scorerRow = '';
+            if (scorer) {
+                const isWinner = scorerWinner && scorer === scorerWinner;
+                const badge = isWinner
+                    ? `<span style="margin-left:6px;background:#fef3c7;border:1px solid #fbbf24;border-radius:10px;padding:1px 8px;font-size:0.78em;font-weight:700;color:#92400e">🏆 Winner +${scorerBonusPts} pts</span>`
+                    : (scorerWinner ? `<span style="margin-left:6px;font-size:0.78em;color:#aaa">✗ Not the winner</span>` : '');
+                scorerRow = `<tr style="background:#f8f4ff"><td>⚽ Top Goalscorer</td><td>${esc(scorer)}${badge}</td><td class="pts-col">${scorerBonusPts || 0}</td></tr>`;
+            }
+
             document.getElementById('modalTitle').textContent = displayName + ' — ' + total + ' pts';
             document.getElementById('modalBody').innerHTML = `
         <table class="detail-table">
             <thead><tr><th>Bracket</th><th>Team</th><th style="text-align:right">Points</th></tr></thead>
-            <tbody>${rows}</tbody>
+            <tbody>${rows}${scorerRow}</tbody>
             <tfoot><tr><td colspan="2"><strong>Total</strong></td><td class="pts-col"><strong>${total}</strong></td></tr></tfoot>
         </table>
         <h4 style="margin-top:20px;margin-bottom:10px;color:#8B0000">Points Breakdown by Match</h4>
