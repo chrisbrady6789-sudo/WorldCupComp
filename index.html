@@ -1841,6 +1841,16 @@
                     <div id="renameMsg" style="font-size:0.82em;margin-top:6px"></div>
                 </div>
 
+                <div id="homeDisplayNameCard" class="rules-box hidden" style="margin-bottom:20px;background:#f0f7ff;border:1.5px solid #bfdbfe">
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                        <div>
+                            <strong style="font-size:1em">✏️ Change Display Name</strong>
+                            <p style="margin:4px 0 0;font-size:0.88em;color:#475569">Change the name shown on leaderboards and scoreboards. This does <em>not</em> change your login username.</p>
+                        </div>
+                        <button class="btn btn-gold btn-sm" onclick="toggleRename()" style="white-space:nowrap">Change Name</button>
+                    </div>
+                </div>
+
                 <div class="rules-box" style="margin-bottom:24px">
                     <h3>📋 How It Works</h3>
                     <ul style="margin-left:20px;line-height:2">
@@ -2554,6 +2564,7 @@
         let currentUser = null;
         let currentDisplayName = null;
         let isAdmin = false;
+        let isGuestView = false;
 
         let appData = {
             settings: {
@@ -2764,7 +2775,7 @@
                 if (!snap.exists()) { showMsg('loginMsg', 'User not found.', 'error'); return; }
                 const u = snap.val();
                 if (u.password !== hashPassword(password)) { showMsg('loginMsg', 'Incorrect password.', 'error'); return; }
-                currentUser = username; isAdmin = false;
+                currentUser = username; isAdmin = false; isGuestView = false;
                 currentDisplayName = u.displayName || username;
                 sessionStorage.setItem('wcUser', JSON.stringify({ username, displayName: currentDisplayName, isAdmin: false }));
                 showApp();
@@ -2782,7 +2793,7 @@
             db.ref('/users/' + key).once('value').then(snap => {
                 if (snap.exists()) { showMsg('loginMsg', 'Username already taken.', 'error'); return; }
                 db.ref('/users/' + key).set({ username, displayName: username, password: hashPassword(password), created: Date.now() }).then(() => {
-                    currentUser = username; isAdmin = false;
+                    currentUser = username; isAdmin = false; isGuestView = false;
                     currentDisplayName = username;
                     sessionStorage.setItem('wcUser', JSON.stringify({ username, displayName: username, isAdmin: false }));
                     showApp();
@@ -2791,7 +2802,7 @@
         }
 
         function logout() {
-            currentUser = null; currentDisplayName = null; isAdmin = false;
+            currentUser = null; currentDisplayName = null; isAdmin = false; isGuestView = false;
             sessionStorage.removeItem('wcUser');
             stopApiPoll();
             window.location.reload();
@@ -2858,10 +2869,9 @@
         }
 
         function selectGuestUser(key, displayName) {
-            // Set currentUser without a password — they're past the deadline, it's view-only
             currentUser = displayName || '__guest__';
             isAdmin = false;
-            // Don't save to sessionStorage — keeps it as a soft session choice
+            isGuestView = true;
             showApp();
         }
 
@@ -2870,7 +2880,7 @@
             document.getElementById('appContainer').classList.remove('hidden');
             document.getElementById('mainNav').classList.remove('hidden');
             const displayLabel = currentDisplayName || currentUser;
-            const canRename = !isAdmin && currentUser && currentUser !== '__guest__';
+            const canRename = !isAdmin && !isGuestView && currentUser && currentUser !== '__guest__';
             document.getElementById('userInfo').innerHTML = canRename
                 ? `<strong>${esc(displayLabel)}</strong> <button class="btn btn-sm" onclick="toggleRename()" title="Change display name" style="padding:2px 7px;font-size:0.8em">✏️</button> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>`
                 : `<strong>${esc(displayLabel)}</strong> <button class="btn btn-sm btn-gold" onclick="logout()">Logout</button>`;
@@ -2881,6 +2891,9 @@
 
             const showInsights = isAdmin || isDeadlinePassed();
             document.getElementById('nav-insights').classList.toggle('hidden', !showInsights);
+
+            const nameCard = document.getElementById('homeDisplayNameCard');
+            if (nameCard) nameCard.classList.toggle('hidden', !canRename);
 
             showPage('home');
             startApiPollIfEnabled();
@@ -3633,16 +3646,52 @@
                 const entries = Object.entries(users);
                 if (!entries.length) { document.getElementById('usersList').innerHTML = '<p style="color:#666">No registered users.</p>'; return; }
                 document.getElementById('usersList').innerHTML = `<table class="results-table">
-            <thead><tr><th>Username</th><th>Registered</th><th>Picks</th><th></th></tr></thead>
+            <thead><tr><th>Username</th><th>Display Name</th><th>Registered</th><th>Picks</th><th></th></tr></thead>
             <tbody>${entries.map(([key, u]) => {
                     const picks = appData.picks[key] || {};
                     const pickCount = Object.keys(picks).filter(k => !k.startsWith('_')).length;
-                    return `<tr><td>${esc(u.username)}</td><td>${u.created ? new Date(u.created).toLocaleDateString() : '-'}</td>
+                    const displayName = esc(u.displayName || u.username);
+                    return `<tr>
+                    <td>${esc(u.username)}</td>
+                    <td>
+                        <span id="dn-label-${key}">${displayName}</span>
+                        <span id="dn-edit-${key}" class="hidden" style="display:none">
+                            <input type="text" id="dn-input-${key}" value="${displayName}" style="padding:3px 7px;border:1px solid var(--border);border-radius:6px;font-size:0.88em;width:120px">
+                            <button class="btn btn-gold btn-sm" onclick="adminSaveDisplayName('${key}')">Save</button>
+                            <button class="btn btn-sm" onclick="adminCancelDisplayName('${key}')">Cancel</button>
+                        </span>
+                        <button class="btn btn-sm" id="dn-btn-${key}" onclick="adminEditDisplayName('${key}')" style="padding:2px 6px;font-size:0.78em;margin-left:4px" title="Edit display name">✏️</button>
+                    </td>
+                    <td>${u.created ? new Date(u.created).toLocaleDateString() : '-'}</td>
                     <td>${pickCount}/${NUM_BRACKETS}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="deleteUser('${key}')">Delete</button></td></tr>`;
                 }).join('')}</tbody>
         </table>`;
             });
+        }
+
+        function adminEditDisplayName(key) {
+            document.getElementById('dn-label-' + key).style.display = 'none';
+            document.getElementById('dn-btn-' + key).style.display = 'none';
+            const editSpan = document.getElementById('dn-edit-' + key);
+            editSpan.style.display = '';
+            editSpan.classList.remove('hidden');
+            document.getElementById('dn-input-' + key).focus();
+        }
+
+        function adminCancelDisplayName(key) {
+            document.getElementById('dn-label-' + key).style.display = '';
+            document.getElementById('dn-btn-' + key).style.display = '';
+            document.getElementById('dn-edit-' + key).style.display = 'none';
+        }
+
+        async function adminSaveDisplayName(key) {
+            const newName = document.getElementById('dn-input-' + key).value.trim();
+            if (!newName) return;
+            await db.ref('/users/' + key + '/displayName').set(newName);
+            appData.users[key] = { ...appData.users[key], displayName: newName };
+            document.getElementById('dn-label-' + key).textContent = newName;
+            adminCancelDisplayName(key);
         }
 
         function deleteUser(key) {
