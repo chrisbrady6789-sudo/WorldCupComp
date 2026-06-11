@@ -1093,38 +1093,63 @@
             font-size: 0.85em;
         }
 
-        .overall-donut-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
+        .overall-bar-chart {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 28px;
-            flex-wrap: wrap;
-            margin-bottom: 0;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .overall-donut-legend {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 20px;
-            font-size: 0.82em;
+        .overall-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88em;
+        }
+
+        .overall-bar-rank {
+            flex: 0 0 20px;
+            text-align: right;
             color: var(--text-mid);
+            font-size: 0.78em;
+            font-weight: 600;
         }
 
-        .overall-donut-legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .overall-bar-label {
+            flex: 0 0 160px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text);
+            font-weight: 500;
         }
 
-        .overall-donut-legend-dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            flex-shrink: 0;
+        .overall-bar-track {
+            flex: 1;
+            background: var(--border);
+            border-radius: 4px;
+            height: 10px;
+            overflow: hidden;
+            min-width: 60px;
+        }
+
+        .overall-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .overall-bar-pct {
+            flex: 0 0 36px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.88em;
+        }
+
+        .overall-bar-count {
+            flex: 0 0 60px;
+            color: var(--text-mid);
+            font-size: 0.78em;
         }
 
         /* ---- Tournament Form ---- */
@@ -2251,11 +2276,8 @@
             <div class="insights-grid">
                 <div class="insight-card" style="grid-column: 1 / -1;">
                     <h3>🌍 Overall Pick Distribution</h3>
+                    <p style="font-size:0.83em;color:var(--text-mid);margin:-4px 0 14px">% of players who picked each team across all brackets</p>
                     <div id="overallDonutCard">
-                        <p class="no-data">No picks yet.</p>
-                    </div>
-                    <div class="insight-section-title" style="margin-top:20px">By Bracket</div>
-                    <div class="bracket-charts-grid" id="bracketChartsGrid">
                         <p class="no-data">No picks yet.</p>
                     </div>
                 </div>
@@ -2289,6 +2311,13 @@
                 <div class="insight-card">
                     <h3>🏅 Standings Snapshot</h3>
                     <div id="standingsSnap"></div>
+                </div>
+                <div class="insight-card" style="grid-column: 1 / -1;">
+                    <h3>🗂️ Pick Distribution by Bracket</h3>
+                    <p style="font-size:0.83em;color:var(--text-mid);margin:-4px 0 14px">Breakdown of team picks within each bracket</p>
+                    <div class="bracket-charts-grid" id="bracketChartsGrid">
+                        <p class="no-data">No picks yet.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4247,36 +4276,35 @@
                 });
             });
 
+            // ---- Overall bar chart ----
+            const overallSorted = Object.entries(overallCounts).sort((a, b) => b[1] - a[1]);
             const overallEl = document.getElementById('overallDonutCard');
-            const bracketEl = document.getElementById('bracketChartsGrid');
 
             if (!totalPlayers) {
                 overallEl.innerHTML = '<p class="no-data">No picks yet.</p>';
-                bracketEl.innerHTML = '';
+                document.getElementById('bracketChartsGrid').innerHTML = '';
                 return;
             }
 
-            // ---- Overall donut ----
-            const overallSorted = Object.entries(overallCounts).sort((a, b) => b[1] - a[1]);
-            const overallTotal = overallSorted.reduce((s, [, n]) => s + n, 0) || 1;
-            const topN = overallSorted.slice(0, 12);
-            const otherCount = overallSorted.slice(12).reduce((s, [, n]) => s + n, 0);
-            const donutSlices = topN.map(([, n], i) => ({ pct: n / overallTotal * 100, colour: CHART_COLOURS[i] }));
-            if (otherCount) donutSlices.push({ pct: otherCount / overallTotal * 100, colour: '#cbd5e1' });
+            const topN = overallSorted.slice(0, 16);
+            const maxCount = topN[0]?.[1] || 1;
 
-            const legendItems = topN.map(([team, n], i) => `
-                <div class="overall-donut-legend-item">
-                    <span class="overall-donut-legend-dot" style="background:${CHART_COLOURS[i]}"></span>
-                    <span>${countryFlag(team)} ${esc(team)} <span style="color:var(--text-light);font-size:0.9em">${Math.round(n / totalPlayers * 100)}%</span></span>
-                </div>`).join('');
-
-            overallEl.innerHTML = `
-                <div class="overall-donut-card">
-                    ${buildDonutSVG(donutSlices, 120)}
-                    <div class="overall-donut-legend">${legendItems}</div>
+            overallEl.innerHTML = `<div class="overall-bar-chart">${topN.map(([team, n], i) => {
+                const pct = Math.round(n / totalPlayers * 100);
+                const barW = Math.round(n / maxCount * 100);
+                return `<div class="overall-bar-row">
+                    <span class="overall-bar-rank">${i + 1}</span>
+                    <span class="overall-bar-label">${countryFlag(team)} ${esc(team)}</span>
+                    <div class="overall-bar-track">
+                        <div class="overall-bar-fill" style="width:${barW}%;background:${CHART_COLOURS[i % CHART_COLOURS.length]}"></div>
+                    </div>
+                    <span class="overall-bar-pct">${pct}%</span>
+                    <span class="overall-bar-count">${n} pick${n !== 1 ? 's' : ''}</span>
                 </div>`;
+            }).join('')}</div>`;
 
             // ---- Per-bracket mini charts ----
+            const bracketEl = document.getElementById('bracketChartsGrid');
             const bracketKeys = Object.keys(brackets).sort();
             bracketEl.innerHTML = bracketKeys.map(bk => {
                 const bracket = brackets[bk];
