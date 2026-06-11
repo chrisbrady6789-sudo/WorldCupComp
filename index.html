@@ -1754,6 +1754,166 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* ============ LIVE TAB ============ */
+        .live-match-card {
+            background: var(--card-bg);
+            border: 2px solid #16a34a;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 0 3px rgba(22,163,74,0.08);
+        }
+
+        .live-match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            font-size: 0.8em;
+            color: var(--text-mid);
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-weight: 700;
+            font-size: 0.82em;
+        }
+
+        .live-badge::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: #16a34a;
+            border-radius: 50%;
+            animation: livePulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
+        }
+
+        .live-scoreline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .live-team {
+            flex: 1;
+            text-align: center;
+        }
+
+        .live-team-name {
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--navy-mid);
+            margin-bottom: 4px;
+        }
+
+        .live-team-name.my-team-name {
+            color: #065f46;
+        }
+
+        .live-score-box {
+            font-size: 2.6em;
+            font-weight: 900;
+            color: var(--navy);
+            min-width: 80px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .live-clock {
+            font-size: 0.75em;
+            color: var(--text-mid);
+            font-weight: 600;
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        .live-stats {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 6px 10px;
+            font-size: 0.82em;
+        }
+
+        .live-stat-row {
+            display: contents;
+        }
+
+        .live-stat-home {
+            text-align: right;
+            font-weight: 600;
+            color: var(--navy-mid);
+        }
+
+        .live-stat-label {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .live-stat-away {
+            text-align: left;
+            font-weight: 600;
+            color: var(--navy-mid);
+        }
+
+        .live-poss-bar {
+            display: flex;
+            height: 5px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .live-poss-home {
+            background: var(--navy-light);
+            transition: width 0.5s;
+        }
+
+        .live-poss-away {
+            background: #94a3b8;
+            transition: width 0.5s;
+        }
+
+        .live-venue {
+            font-size: 0.75em;
+            color: var(--text-light);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .live-no-matches {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-mid);
+        }
+
+        .live-no-matches .live-no-icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+        }
+
+        .live-refresh-status {
+            font-size: 0.8em;
+            color: var(--text-light);
+            text-align: right;
+            margin-bottom: 14px;
+        }
     </style>
 </head>
 
@@ -1779,8 +1939,9 @@
         <button onclick="showPage('leaderboard')" id="nav-leaderboard">🏆 Leaderboard</button>
         <button onclick="showPage('mypicks')" id="nav-mypicks">🎯 My Picks</button>
         <button onclick="showPage('allteams')" id="nav-allteams">👥 All Teams</button>
-        <button onclick="showPage('results')" id="nav-results">📋 Results</button>
         <button onclick="showPage('fixtures')" id="nav-fixtures">📅 Fixtures</button>
+        <button onclick="showPage('live')" id="nav-live">🔴 Live</button>
+        <button onclick="showPage('results')" id="nav-results">📊 Results</button>
         <button onclick="showPage('insights')" id="nav-insights">📊 Insights</button>
         <button onclick="showPage('admin')" id="nav-admin" class="hidden">⚙️ Admin</button>
     </div>
@@ -2090,8 +2251,18 @@
         <!-- Results Page -->
         <div id="resultsPage" class="container hidden">
             <div class="card">
-                <h2>&#x1F4CB; Match Results</h2>
+                <h2>📊 Results &amp; Standings</h2>
+                <div id="resultsStandingsArea"></div>
                 <div id="resultsContainer"></div>
+            </div>
+        </div>
+
+        <!-- Live Page -->
+        <div id="livePage" class="container hidden">
+            <div class="card">
+                <h2>🔴 Live Scores</h2>
+                <div id="liveRefreshStatus" class="live-refresh-status"></div>
+                <div id="liveContainer"></div>
             </div>
         </div>
 
@@ -2266,7 +2437,7 @@
         <!-- Fixtures Page -->
         <div id="fixturesPage" class="container hidden">
             <div class="card">
-                <h2>📅 Fixtures &amp; Standings</h2>
+                <h2>📅 Upcoming Fixtures</h2>
 
                 <!-- Filter toggle -->
                 <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center">
@@ -2275,9 +2446,6 @@
                     <button class="btn" id="fixFilterMine" onclick="setFixtureFilter('mine')">My Picks Only</button>
                     <span id="fixFetchStatus" style="font-size:0.82em;color:var(--text-mid);margin-left:auto"></span>
                 </div>
-
-                <!-- Group Standings (filtered to picked teams' groups) -->
-                <div id="groupStandingsArea"></div>
 
                 <!-- Fixtures list -->
                 <div id="fixturesList"></div>
@@ -2958,7 +3126,7 @@
                 page = 'home';
             }
 
-            ['home', 'leaderboard', 'mypicks', 'allteams', 'results', 'fixtures', 'insights', 'admin'].forEach(p => {
+            ['home', 'leaderboard', 'mypicks', 'allteams', 'results', 'live', 'fixtures', 'insights', 'admin'].forEach(p => {
                 const pageEl = document.getElementById(p + 'Page');
                 const navEl = document.getElementById('nav-' + p);
 
@@ -2976,6 +3144,8 @@
             if (page === 'mypicks') {
                 tempPicks = { ...(appData.picks[slugify(currentUser)] || {}) };
             }
+
+            if (page !== 'live') stopLivePoll();
 
             renderPage(page);
         }
@@ -3002,6 +3172,7 @@
             if (page === 'mypicks') renderMyPicks();
             if (page === 'allteams') renderAllTeams();
             if (page === 'results') renderResults();
+            if (page === 'live') renderLive();
             if (page === 'fixtures') renderFixtures();
             if (page === 'insights') renderInsights();
             if (page === 'admin') renderAdmin();
@@ -3412,33 +3583,6 @@
         // ============================================================
         // RESULTS PAGE
         // ============================================================
-        function renderResults() {
-            const container = document.getElementById('resultsContainer');
-            const rounds = ['final', 'sf', 'qf', 'r16', 'group'];
-            const results = Object.entries(appData.matchResults || {});
-            if (!results.length) {
-                container.innerHTML = '<p style="color:#666">No results entered yet.</p>';
-                return;
-            }
-            let html = '';
-            rounds.forEach(round => {
-                const rMatches = results.filter(([, m]) => m.round === round);
-                if (!rMatches.length) return;
-                html += `<h3 style="margin:20px 0 10px;color:#8B0000">${ROUND_LABELS[round]}</h3>
-        <table class="results-table"><thead><tr><th>Home</th><th>Result</th><th>Away</th><th>Round</th></tr></thead><tbody>`;
-                rMatches.forEach(([, m]) => {
-                    const aWon = m.result === 'home'; const bWon = m.result === 'away'; const draw = m.result === 'draw';
-                    html += `<tr>
-                <td class="${aWon ? 'result-win' : ''}">${esc(m.teamA)}</td>
-                <td class="${draw ? 'result-draw' : ''}">${aWon ? '🏆 Win' : bWon ? 'Loss' : '🤝 Draw'}</td>
-                <td class="${bWon ? 'result-win' : ''}">${esc(m.teamB)}</td>
-                <td><span class="round-badge ${ROUND_CLASS[round]}">${ROUND_LABELS[round]}</span></td>
-            </tr>`;
-                });
-                html += '</tbody></table>';
-            });
-            container.innerHTML = html;
-        }
 
         // ============================================================
         // ADMIN
@@ -3916,6 +4060,7 @@
         let standingsData = null;     // cached ESPN standings
         let fixtureFilter = 'all';    // 'all' | 'mine'
         let fixtureFetchTime = 0;
+        let livePollTimer = null;
 
         function setFixtureFilter(f) {
             fixtureFilter = f;
@@ -3924,9 +4069,12 @@
             renderFixturesFromData();
         }
 
+        function stopLivePoll() {
+            if (livePollTimer) { clearInterval(livePollTimer); livePollTimer = null; }
+        }
+
         function renderFixtures() {
             const now = Date.now();
-            // Re-fetch if no data or older than 90s
             if (!fixtureData || (now - fixtureFetchTime) > 90000) {
                 fetchEspnFixturesAndStandings();
             } else {
@@ -3937,7 +4085,6 @@
         function fetchEspnFixturesAndStandings() {
             document.getElementById('fixFetchStatus').textContent = 'Fetching from ESPN…';
             document.getElementById('fixturesList').innerHTML = '<p style="color:var(--text-mid);padding:20px">Loading fixtures…</p>';
-            document.getElementById('groupStandingsArea').innerHTML = '';
 
             const fixtureUrl = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719&limit=200';
             const standingsUrl = 'https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings';
@@ -3977,7 +4124,12 @@
 
             const myTeams = getMyTeams();
 
-            let events = fixtureData;
+            // Only upcoming (pre-match) fixtures
+            let events = fixtureData.filter(e => {
+                const status = e.competitions?.[0]?.status?.type || {};
+                return status.state === 'pre';
+            });
+
             if (fixtureFilter === 'mine') {
                 events = events.filter(e => {
                     const comp = e.competitions?.[0];
@@ -3989,8 +4141,7 @@
 
             if (!events.length) {
                 document.getElementById('fixturesList').innerHTML =
-                    '<div class="alert alert-info">No fixtures found for your picked teams yet.</div>';
-                renderGroupStandings(myTeams);
+                    '<div class="alert alert-info">No upcoming fixtures' + (fixtureFilter === 'mine' ? ' for your picked teams' : '') + '.</div>';
                 return;
             }
 
@@ -4018,42 +4169,28 @@
                     const isMyA = myTeams.includes(normalizeTeam(aName));
                     const isMyMatch = isMyH || isMyA;
 
-                    const status = comp.status?.type || {};
-                    const isLive = status.state === 'in';
-                    const isFt = !!status.completed;
-                    const isPre = !isLive && !isFt;
-
                     const grp = teamGroup(hName) || teamGroup(aName);
 
                     const koTime = new Date(e.date).toLocaleTimeString('en-IE', {
                         hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Dublin'
                     });
 
-                    const rowClass = ['fixture-row', isMyMatch ? 'my-team' : '', isLive ? 'live' : '', isFt ? 'ft' : ''].filter(Boolean).join(' ');
-                    const scoreClass = isLive ? 'fix-score live-score' : 'fix-score';
-                    const liveLabel = `<span class="fix-status-live">LIVE</span>`;
-                    const centre = isFt
-                        ? `<div class="${scoreClass}">${home.score}-${away.score}<br><span style="font-size:0.65em;font-weight:600;color:var(--text-light)">FT</span></div>`
-                        : isLive
-                            ? `<div class="${scoreClass}">${home.score}-${away.score}<br>${liveLabel}</div>`
-                            : `<div class="fix-score">vs</div>`;
+                    const rowClass = ['fixture-row', isMyMatch ? 'my-team' : ''].filter(Boolean).join(' ');
 
+                    const oddsObj = comp.odds?.[0];
+                    const hML = oddsObj?.moneyline?.home?.close?.odds;
+                    const aML = oddsObj?.moneyline?.away?.close?.odds;
+                    const dML = oddsObj?.drawOdds?.moneyLine;
                     let hOdds = '', aOdds = '', drawOdds = '';
-                    if (isPre) {
-                        const oddsObj = comp.odds?.[0];
-                        const hML = oddsObj?.moneyline?.home?.close?.odds;
-                        const aML = oddsObj?.moneyline?.away?.close?.odds;
-                        const dML = oddsObj?.drawOdds?.moneyLine;
-                        if (hML || aML || dML) {
-                            const hFrac = hML ? americanToFractional(hML) : null;
-                            const aFrac = aML ? americanToFractional(aML) : null;
-                            const dFrac = dML ? americanToFractional(dML) : null;
-                            const toDecimal = ml => parseInt(ml) > 0 ? parseInt(ml) / 100 + 1 : 100 / Math.abs(parseInt(ml)) + 1;
-                            const favH = (hML && aML) ? toDecimal(hML) <= toDecimal(aML) : !!hML;
-                            hOdds = hFrac ? `<span class="fix-odds-val${favH ? ' fav' : ''}">${hFrac}</span>` : '';
-                            aOdds = aFrac ? `<span class="fix-odds-val${!favH ? ' fav' : ''}">${aFrac}</span>` : '';
-                            drawOdds = dFrac ? `<div class="fix-odds-draw"><span class="fix-odds-draw-label">Draw</span><span class="fix-odds-val">${dFrac}</span></div>` : '';
-                        }
+                    if (hML || aML || dML) {
+                        const hFrac = hML ? americanToFractional(hML) : null;
+                        const aFrac = aML ? americanToFractional(aML) : null;
+                        const dFrac = dML ? americanToFractional(dML) : null;
+                        const toDecimal = ml => parseInt(ml) > 0 ? parseInt(ml) / 100 + 1 : 100 / Math.abs(parseInt(ml)) + 1;
+                        const favH = (hML && aML) ? toDecimal(hML) <= toDecimal(aML) : !!hML;
+                        hOdds = hFrac ? `<span class="fix-odds-val${favH ? ' fav' : ''}">${hFrac}</span>` : '';
+                        aOdds = aFrac ? `<span class="fix-odds-val${!favH ? ' fav' : ''}">${aFrac}</span>` : '';
+                        drawOdds = dFrac ? `<div class="fix-odds-draw"><span class="fix-odds-draw-label">Draw</span><span class="fix-odds-val">${dFrac}</span></div>` : '';
                     }
 
                     const matchRow = `
@@ -4063,8 +4200,8 @@
                                 ${hOdds}
                             </div>
                             <div class="fix-centre">
-                                ${isPre ? `<div class="fix-topbar-inner"><span class="fix-ko-time">KO ${koTime}</span>${grp ? `<span class="fix-group">Grp ${grp}</span>` : ''}</div>` : ''}
-                                ${centre}
+                                <div class="fix-topbar-inner"><span class="fix-ko-time">KO ${koTime}</span>${grp ? `<span class="fix-group">Grp ${grp}</span>` : ''}</div>
+                                <div class="fix-score">vs</div>
                                 ${drawOdds}
                             </div>
                             <div class="fix-away">
@@ -4080,39 +4217,66 @@
             }).join('');
 
             document.getElementById('fixturesList').innerHTML = html;
-            renderGroupStandings(myTeams);
         }
 
-        function renderGroupStandings(myTeams) {
+        // ============================================================
+        // RESULTS (completed matches + standings)
+        // ============================================================
+        function renderResults() {
+            // Firebase match results
+            const container = document.getElementById('resultsContainer');
+            const rounds = ['final', 'sf', 'qf', 'r16', 'group'];
+            const results = Object.entries(appData.matchResults || {});
+            if (!results.length) {
+                container.innerHTML = '<p style="color:#666;margin-top:16px">No completed matches yet.</p>';
+            } else {
+                let html = '';
+                rounds.forEach(round => {
+                    const rMatches = results.filter(([, m]) => m.round === round);
+                    if (!rMatches.length) return;
+                    html += `<h3 style="margin:20px 0 10px;color:#8B0000">${ROUND_LABELS[round]}</h3>
+        <table class="results-table"><thead><tr><th>Home</th><th>Result</th><th>Away</th><th>Round</th></tr></thead><tbody>`;
+                    rMatches.forEach(([, m]) => {
+                        const aWon = m.result === 'home'; const bWon = m.result === 'away'; const draw = m.result === 'draw';
+                        html += `<tr>
+                <td class="${aWon ? 'result-win' : ''}">${esc(m.teamA)}</td>
+                <td class="${draw ? 'result-draw' : ''}">${aWon ? '🏆 Win' : bWon ? 'Loss' : '🤝 Draw'}</td>
+                <td class="${bWon ? 'result-win' : ''}">${esc(m.teamB)}</td>
+                <td><span class="round-badge ${ROUND_CLASS[round]}">${ROUND_LABELS[round]}</span></td>
+            </tr>`;
+                    });
+                    html += '</tbody></table>';
+                });
+                container.innerHTML = html;
+            }
+
+            // Group standings from cached ESPN data (no extra fetch needed)
+            renderGroupStandings();
+        }
+
+        function renderGroupStandings() {
+            const el = document.getElementById('resultsStandingsArea');
             if (!standingsData || !standingsData.length) {
-                document.getElementById('groupStandingsArea').innerHTML = '';
+                // Trigger a fetch if we have nothing yet
+                if (!fixtureData) {
+                    el.innerHTML = '<p style="color:var(--text-mid);padding:10px 0">Loading standings…</p>';
+                    fetchEspnFixturesAndStandings(true);
+                }
                 return;
             }
-
-            // Find which groups contain picked teams
-            const myGroups = new Set(myTeams.map(t => teamGroup(t)).filter(Boolean));
-            if (!myGroups.size && fixtureFilter === 'mine') {
-                document.getElementById('groupStandingsArea').innerHTML = '';
-                return;
-            }
-
-            const groupsToShow = fixtureFilter === 'mine'
-                ? standingsData.filter(g => myGroups.has(g.abbreviation))
-                : standingsData;
-
-            if (!groupsToShow.length) { document.getElementById('groupStandingsArea').innerHTML = ''; return; }
 
             const html = `
         <h3 style="font-size:0.88em;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-mid);margin-bottom:12px">
             Group Standings
         </h3>
         <div class="standings-grid">
-            ${groupsToShow.map(g => {
+            ${standingsData.map(g => {
                 const entries = (g.standings && g.standings.entries) || [];
                 const getStat = (e, name) => {
                     const s = (e.stats || []).find(x => x.name === name);
                     return s ? (s.displayValue || Math.round(s.value)) : 0;
                 };
+                const myTeams = getMyTeams();
                 const rows = entries.map(e => {
                     const tName = e.team.displayName;
                     const isMy = myTeams.includes(normalizeTeam(tName));
@@ -4140,7 +4304,110 @@
         </div>
         <hr style="border:none;border-top:1px solid var(--border);margin-bottom:20px">
     `;
-            document.getElementById('groupStandingsArea').innerHTML = html;
+            el.innerHTML = html;
+        }
+
+        // ============================================================
+        // LIVE TAB
+        // ============================================================
+        function renderLive() {
+            fetchAndDisplayLive();
+            stopLivePoll();
+            livePollTimer = setInterval(fetchAndDisplayLive, 60000);
+        }
+
+        function fetchAndDisplayLive() {
+            const container = document.getElementById('liveContainer');
+            const status = document.getElementById('liveRefreshStatus');
+            if (!container) return;
+
+            fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard')
+                .then(r => r.json())
+                .then(data => {
+                    const myTeams = getMyTeams();
+                    const liveEvents = (data.events || []).filter(e =>
+                        e.competitions?.[0]?.status?.type?.state === 'in'
+                    );
+
+                    if (status) status.textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB');
+
+                    if (!liveEvents.length) {
+                        container.innerHTML = `
+                            <div class="live-no-matches">
+                                <div class="live-no-icon">⏸️</div>
+                                <div style="font-weight:700;font-size:1.1em;margin-bottom:6px">No matches live right now</div>
+                                <div style="font-size:0.88em">This page checks for live matches every 60 seconds.</div>
+                            </div>`;
+                        return;
+                    }
+
+                    container.innerHTML = liveEvents.map(e => {
+                        const comp = e.competitions[0];
+                        const home = comp.competitors.find(c => c.homeAway === 'home');
+                        const away = comp.competitors.find(c => c.homeAway === 'away');
+                        if (!home || !away) return '';
+
+                        const hName = home.team.displayName;
+                        const aName = away.team.displayName;
+                        const isMyH = myTeams.includes(normalizeTeam(hName));
+                        const isMyA = myTeams.includes(normalizeTeam(aName));
+
+                        const clock = comp.status.displayClock || '';
+                        const period = comp.status.type.description || '';
+                        const venue = comp.venue?.fullName || '';
+
+                        const getStat = (competitor, name) => {
+                            const s = (competitor.statistics || []).find(x => x.name === name);
+                            return s ? s.displayValue : '—';
+                        };
+
+                        const hPoss = parseFloat(getStat(home, 'possessionPct')) || 0;
+                        const aPoss = parseFloat(getStat(away, 'possessionPct')) || 0;
+                        const total = hPoss + aPoss || 100;
+
+                        const statsRows = [
+                            ['totalShots', 'Shots'],
+                            ['shotsOnTarget', 'On Target'],
+                            ['wonCorners', 'Corners'],
+                            ['foulsCommitted', 'Fouls'],
+                        ].map(([key, label]) => `
+                            <div class="live-stat-row">
+                                <div class="live-stat-home">${getStat(home, key)}</div>
+                                <div class="live-stat-label">${label}</div>
+                                <div class="live-stat-away">${getStat(away, key)}</div>
+                            </div>`).join('');
+
+                        return `
+                            <div class="live-match-card">
+                                <div class="live-match-header">
+                                    <span>${venue}</span>
+                                    <span class="live-badge">${clock} — ${period}</span>
+                                </div>
+                                <div class="live-scoreline">
+                                    <div class="live-team">
+                                        <div class="live-team-name${isMyH ? ' my-team-name' : ''}">${countryFlag(hName)} ${esc(hName)}</div>
+                                    </div>
+                                    <div>
+                                        <div class="live-score-box">${home.score} – ${away.score}</div>
+                                    </div>
+                                    <div class="live-team">
+                                        <div class="live-team-name${isMyA ? ' my-team-name' : ''}">${countryFlag(aName)} ${esc(aName)}</div>
+                                    </div>
+                                </div>
+                                <div class="live-poss-bar" title="Possession: ${hPoss}% – ${aPoss}%">
+                                    <div class="live-poss-home" style="width:${(hPoss / total * 100).toFixed(1)}%"></div>
+                                    <div class="live-poss-away" style="width:${(aPoss / total * 100).toFixed(1)}%"></div>
+                                </div>
+                                <div style="font-size:0.75em;color:var(--text-light);text-align:center;margin-bottom:10px">
+                                    ${hPoss}% possession ${aPoss}%
+                                </div>
+                                <div class="live-stats">${statsRows}</div>
+                            </div>`;
+                    }).join('');
+                })
+                .catch(() => {
+                    if (status) status.textContent = 'Fetch failed — retrying in 60s';
+                });
         }
 
         // ============================================================
