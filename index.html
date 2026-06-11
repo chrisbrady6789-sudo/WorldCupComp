@@ -4716,7 +4716,7 @@
                     const w = getStat(e, 'wins');
                     const d = getStat(e, 'ties');
                     const l = getStat(e, 'losses');
-                    const gd = getStat(e, 'pointDifferential');
+                    const gd = Number(getStat(e, 'pointDifferential'));
                     return `<tr class="${isMy ? 'my-team-row' : ''}">
                         <td>${countryFlag(tName)} ${esc(tName)}</td>
                         <td>${gp}</td><td>${w}</td><td>${d}</td><td>${l}</td>
