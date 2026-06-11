@@ -270,46 +270,78 @@
         }
 
         /* ============ LEADERBOARD ============ */
-        .leaderboard-wrap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+        .lb-list { display: flex; flex-direction: column; gap: 6px; }
 
-        .leaderboard {
-            width: 100%;
-            min-width: 400px;
-            border-collapse: collapse;
+        .lb-row {
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            overflow: hidden;
+            transition: box-shadow 0.15s;
         }
+        .lb-row:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
+        .lb-row.lb-me { border-color: var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.07) 0%, #fff 100%); }
+        .lb-row.lb-first { border-color: #f5b800; background: linear-gradient(90deg, rgba(255,215,0,0.12) 0%, #fff 100%); }
+        .lb-row.lb-second { border-color: #b0bec5; background: linear-gradient(90deg, rgba(176,190,197,0.10) 0%, #fff 100%); }
+        .lb-row.lb-third { border-color: #cd7f32; background: linear-gradient(90deg, rgba(205,127,50,0.09) 0%, #fff 100%); }
 
-        .leaderboard th {
-            padding: 12px 13px;
-            text-align: left;
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-            color: var(--gold);
-            font-size: 0.82em;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .leaderboard td {
-            padding: 13px 13px;
-            border-bottom: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .leaderboard tr.leader-row td {
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 215, 0, 0.04) 100%);
-            font-weight: 700;
-        }
-
-        .leaderboard tr:hover td {
-            background: #f0f5ff;
-        }
-
-        .leaderboard .clickable {
+        .lb-header {
+            display: grid;
+            grid-template-columns: 48px 1fr auto;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
             cursor: pointer;
+            user-select: none;
         }
+
+        .lb-rank { text-align: center; }
+        .lb-medal { font-size: 1.5em; line-height: 1; }
+        .lb-pos { font-size: 1.05em; font-weight: 700; color: var(--text-mid); }
+        .lb-delta-up { font-size: 0.68em; color: #15803d; font-weight: 700; }
+        .lb-delta-dn { font-size: 0.68em; color: #b91c1c; font-weight: 700; }
+        .lb-delta-eq { font-size: 0.68em; color: #94a3b8; }
+
+        .lb-info { min-width: 0; display: flex; align-items: center; gap: 8px; }
+        .lb-name { font-weight: 700; font-size: 1em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .lb-name-you { color: var(--navy); }
+        .lb-expand-hint { font-size: 0.7em; color: #94a3b8; flex-shrink: 0; transition: transform 0.2s; }
+        .lb-row.lb-open .lb-expand-hint { transform: rotate(180deg); }
+
+        .lb-right { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+        .lb-pts { font-size: 1.4em; font-weight: 900; color: var(--navy); line-height: 1; }
+        .lb-pts-label { font-size: 0.68em; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .lb-teams-drawer {
+            display: none;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 0 14px 12px 62px;
+        }
+        .lb-row.lb-open .lb-teams-drawer { display: flex; }
+
+        .lb-chip {
+            display: inline-flex; align-items: center; gap: 3px;
+            background: #f1f5f9; border: 1px solid #e2e8f0;
+            border-radius: 20px; padding: 2px 8px;
+            font-size: 0.73em; color: #475569; white-space: nowrap;
+        }
+        .lb-chip.lb-chip-alive { background: #dcfce7; border-color: #86efac; color: #166534; font-weight: 600; }
+        .lb-chip.lb-chip-hidden { font-style: italic; color: #aaa; }
+
+        .lb-team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px 12px; width: 100%; }
+        .lb-team-row { display: flex; align-items: center; gap: 5px; font-size: 0.82em; padding: 3px 0; }
+        .lb-team-flag { font-size: 1.1em; flex-shrink: 0; }
+        .lb-team-name-text { flex: 1; color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .lb-team-pts { font-weight: 700; font-size: 0.85em; color: #15803d; flex-shrink: 0; min-width: 28px; text-align: right; }
+        .lb-team-row .lb-team-pts { color: #94a3b8; }
+        .lb-team-row.lb-team-alive .lb-team-name-text { color: #15803d; font-weight: 600; }
+        .lb-team-row.lb-team-alive .lb-team-pts { color: #15803d; }
+        .lb-team-row.lb-team-out .lb-team-name-text { color: #94a3b8; text-decoration: line-through; }
+        .lb-scorer-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8em; color: var(--text-mid); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); width: 100%; }
+        .lb-scorer-row .lb-team-pts { color: #7c3aed; font-weight: 700; }
+        .lb-detail-btn { margin-top: 10px; font-size: 0.78em; background: none; border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; color: var(--navy); cursor: pointer; font-weight: 600; }
+        .lb-detail-btn:hover { background: #f0f5ff; }
 
         /* ============ BRACKET PICKER ============ */
         .bracket-section {
@@ -891,14 +923,10 @@
                 font-size: 0.95em;
             }
 
-            .leaderboard {
-                font-size: 0.84em;
-            }
-
-            .leaderboard th,
-            .leaderboard td {
-                padding: 9px 7px;
-            }
+            .lb-header { grid-template-columns: 40px 1fr auto; padding: 10px 12px; gap: 8px; }
+            .lb-medal { font-size: 1.3em; }
+            .lb-pts { font-size: 1.2em; }
+            .lb-teams-drawer { padding-left: 52px; }
 
             .modal-content {
                 width: 95%;
@@ -1755,6 +1783,53 @@
             }
         }
 
+        /* ============ TOP GOALSCORER RACE ============ */
+        .tgr-row {
+            display: grid;
+            grid-template-columns: 28px 1fr auto;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #fff;
+            margin-bottom: 6px;
+            font-size: 0.88em;
+        }
+        .tgr-row.tgr-picked { border-color: var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.08) 0%, #fff 100%); }
+        .tgr-rank { font-weight: 700; color: var(--text-mid); text-align: center; font-size: 0.9em; }
+        .tgr-player { font-weight: 600; color: var(--text); }
+        .tgr-team { font-size: 0.82em; color: var(--text-mid); }
+        .tgr-pickers { font-size: 0.78em; color: #166534; background: #dcfce7; border-radius: 10px; padding: 1px 7px; display: inline-block; margin-top: 2px; }
+        .tgr-goals { font-size: 1.3em; font-weight: 900; color: var(--navy); text-align: right; white-space: nowrap; }
+        .tgr-goals-label { font-size: 0.65em; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.4px; text-align: right; }
+
+        /* ============ NEWS ============ */
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .news-card {
+            border-radius: 12px; border: 1px solid var(--border); overflow: hidden;
+            background: #fff; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s;
+            display: flex; flex-direction: column; text-decoration: none;
+        }
+        .news-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.12); transform: translateY(-2px); }
+        .news-card-img { width: 100%; height: 160px; object-fit: cover; display: block; background: #e2e8f0; }
+        .news-card-img-placeholder { width: 100%; height: 160px; background: linear-gradient(135deg, #1a3a6e 0%, #0f2444 100%); display: flex; align-items: center; justify-content: center; font-size: 2.5em; }
+        .news-card-body { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .news-card-type { font-size: 0.68em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gold); }
+        .news-card-headline { font-size: 0.92em; font-weight: 700; color: var(--navy); line-height: 1.35; }
+        .news-card-desc { font-size: 0.78em; color: var(--text-mid); line-height: 1.45; flex: 1; }
+        .news-card-footer { font-size: 0.7em; color: #94a3b8; margin-top: 6px; }
+
+        .news-recap-section { margin-bottom: 24px; }
+        .news-recap-card {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+            background: #fff; margin-bottom: 8px;
+        }
+        .news-recap-badge { font-size: 0.68em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: #0f2444; color: var(--gold); padding: 2px 8px; border-radius: 8px; flex-shrink: 0; }
+        .news-recap-text { font-size: 0.85em; color: var(--text); flex: 1; }
+        .news-recap-desc { font-size: 0.78em; color: var(--text-mid); margin-top: 2px; }
+
         /* ============ LIVE TAB ============ */
         .live-match-card {
             background: var(--card-bg);
@@ -1914,6 +1989,111 @@
             text-align: right;
             margin-bottom: 14px;
         }
+
+        /* ============ RESULTS CARDS ============ */
+        .res-day-group {
+            margin-bottom: 24px;
+        }
+
+        .res-day-header {
+            font-size: 0.78em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-mid);
+            padding: 8px 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 10px;
+        }
+
+        .res-match-card {
+            background: var(--card-bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+        }
+
+        .res-match-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.75em;
+        }
+
+        .res-scoreline {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 8px;
+            align-items: start;
+        }
+
+        .res-team {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .res-team-away {
+            text-align: right;
+            align-items: flex-end;
+        }
+
+        .res-team-name {
+            font-weight: 700;
+            font-size: 0.95em;
+            color: var(--navy-mid);
+        }
+
+        .res-my-team .res-team-name {
+            color: #065f46;
+        }
+
+        .res-scorers {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .res-scorers-away {
+            align-items: flex-end;
+        }
+
+        .res-scorer {
+            font-size: 0.75em;
+            color: var(--text-mid);
+        }
+
+        .res-red {
+            font-size: 0.75em;
+            color: #b91c1c;
+        }
+
+        .res-min {
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+
+        .res-score-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--navy);
+            white-space: nowrap;
+            padding-top: 2px;
+        }
+
+        .res-score-win {
+            color: #15803d;
+        }
+
+        .res-score-sep {
+            color: var(--text-light);
+            font-weight: 300;
+        }
     </style>
 </head>
 
@@ -1943,6 +2123,7 @@
         <button onclick="showPage('live')" id="nav-live">🔴 Live</button>
         <button onclick="showPage('results')" id="nav-results">📊 Results</button>
         <button onclick="showPage('insights')" id="nav-insights">📊 Insights</button>
+        <button onclick="showPage('news')" id="nav-news">📰 News</button>
         <button onclick="showPage('admin')" id="nav-admin" class="hidden">⚙️ Admin</button>
     </div>
 
@@ -2146,21 +2327,8 @@
         <div id="leaderboardPage" class="container hidden">
             <div class="card">
                 <h2>&#x1F3C6; Leaderboard</h2>
-                <div id="lbApiStatus" style="margin-bottom:10px"></div>
-                <div class="leaderboard-wrap">
-                    <table class="leaderboard" id="lbTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Player</th>
-                                <th>Points</th>
-                                <th>Teams</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lbBody"></tbody>
-                    </table>
-                </div>
+                <div id="lbApiStatus" style="margin-bottom:14px"></div>
+                <div id="lbList" class="lb-list"></div>
             </div>
         </div>
 
@@ -2253,6 +2421,7 @@
             <div class="card">
                 <h2>📊 Results &amp; Standings</h2>
                 <div id="resultsStandingsArea"></div>
+                <div id="topGoalscorerRaceArea"></div>
                 <div id="resultsContainer"></div>
             </div>
         </div>
@@ -2449,6 +2618,15 @@
 
                 <!-- Fixtures list -->
                 <div id="fixturesList"></div>
+            </div>
+        </div>
+
+        <!-- News Page -->
+        <div id="newsPage" class="container hidden">
+            <div class="card">
+                <h2>📰 World Cup News</h2>
+                <p style="color:var(--text-mid);font-size:0.85em;margin-bottom:16px">Latest from ESPN</p>
+                <div id="newsContainer"></div>
             </div>
         </div>
 
@@ -3126,7 +3304,7 @@
                 page = 'home';
             }
 
-            ['home', 'leaderboard', 'mypicks', 'allteams', 'results', 'live', 'fixtures', 'insights', 'admin'].forEach(p => {
+            ['home', 'leaderboard', 'mypicks', 'allteams', 'results', 'live', 'fixtures', 'insights', 'news', 'admin'].forEach(p => {
                 const pageEl = document.getElementById(p + 'Page');
                 const navEl = document.getElementById('nav-' + p);
 
@@ -3175,6 +3353,7 @@
             if (page === 'live') renderLive();
             if (page === 'fixtures') renderFixtures();
             if (page === 'insights') renderInsights();
+            if (page === 'news') renderNews();
             if (page === 'admin') renderAdmin();
         }
 
@@ -3284,45 +3463,97 @@
 
         function renderLeaderboard() {
             const scores = getAllScores();
-            const tbody = document.getElementById('lbBody');
+            const container = document.getElementById('lbList');
             const locked = isDeadlinePassed();
             const picksVisible = isAdmin || locked;
             const prev = getPrevPositions();
 
+            const teamsWithFutureFixture = new Set();
+            (fixtureData || []).forEach(e => {
+                const status = e.competitions?.[0]?.status?.type || {};
+                if (status.state === 'pre' || status.state === 'in') {
+                    e.competitions[0].competitors.forEach(c => {
+                        teamsWithFutureFixture.add(normalizeTeam(c.team.displayName || ''));
+                    });
+                }
+            });
+
             if (!scores.length) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:#999">No entries yet. Be the first to register and pick your teams!</td></tr>';
+                container.innerHTML = '<p style="text-align:center;padding:30px;color:#999">No entries yet.</p>';
                 return;
             }
-            tbody.innerHTML = scores.map((p, i) => {
+
+            container.innerHTML = scores.map((p, i) => {
                 const isMe = p.key === slugify(currentUser);
                 const canSee = picksVisible || isMe;
-                const pickCount = Object.keys(p.picks).filter(k => !k.startsWith('_')).length;
-                const pickList = canSee
-                    ? Object.entries(p.picks).filter(([k]) => !k.startsWith('_')).map(([, t]) => esc(t)).join(', ') || '<em>No picks</em>'
-                    : '<em style="color:#aaa">Hidden until deadline</em>';
-                const clickable = canSee ? 'clickable' : '';
-                const rowClass = (i === 0 ? 'leader-row ' : '') + clickable;
-                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : null;
+                const rankClass = i === 0 ? 'lb-first' : i === 1 ? 'lb-second' : i === 2 ? 'lb-third' : '';
+                const meClass = isMe ? 'lb-me' : '';
 
-                // Position delta
-                let delta = '';
+                let deltaHtml = '';
                 if (prev[p.key] !== undefined) {
                     const diff = prev[p.key] - (i + 1);
-                    if (diff > 0) delta = `<span style="color:#15803d;font-size:0.75em;font-weight:700">▲${diff}</span>`;
-                    else if (diff < 0) delta = `<span style="color:#b91c1c;font-size:0.75em;font-weight:700">▼${Math.abs(diff)}</span>`;
-                    else delta = `<span style="color:#94a3b8;font-size:0.75em">—</span>`;
+                    if (diff > 0) deltaHtml = `<div class="lb-delta-up">▲${diff}</div>`;
+                    else if (diff < 0) deltaHtml = `<div class="lb-delta-dn">▼${Math.abs(diff)}</div>`;
+                    else deltaHtml = `<div class="lb-delta-eq">—</div>`;
                 }
 
-                return `<tr class="${rowClass}" ${canSee ? `onclick="showTeamModal('${p.key}')"` : ''} style="${isMe ? 'font-weight:700' : ''}">
-            <td>${medal} ${delta}</td>
-            <td>${esc(p.displayName)}${isMe ? ' <span style="color:#1a3a6e;font-size:0.78em">(you)</span>' : ''}</td>
-            <td><strong style="font-size:1.2em;color:#0f2444">${locked ? p.total : (isMe ? p.total : '—')}</strong></td>
-            <td style="font-size:0.84em;color:#64748b">${pickList}</td>
-            <td><span class="status-badge ${pickCount === NUM_BRACKETS ? 'status-submitted' : 'status-pending'}">${pickCount === NUM_BRACKETS ? 'Complete' : 'Partial'}</span></td>
-        </tr>`;
+                let drawerHtml = '';
+                if (canSee) {
+                    const teamPicks = Object.entries(p.picks).filter(([k]) => !k.startsWith('_'));
+                    if (teamPicks.length) {
+                        const teamRows = teamPicks.map(([, t]) => {
+                            const alive = fixtureData && teamsWithFutureFixture.has(normalizeTeam(t));
+                            const pts = p.breakdown[t] || 0;
+                            const aliveClass = fixtureData ? (alive ? 'lb-team-alive' : 'lb-team-out') : '';
+                            return `<div class="lb-team-row ${aliveClass}">
+                                <span class="lb-team-flag">${countryFlag(t)}</span>
+                                <span class="lb-team-name-text">${esc(t)}</span>
+                                <span class="lb-team-pts">${pts > 0 ? '+' + pts : '—'}</span>
+                            </div>`;
+                        }).join('');
+                        const scorerPick = p.picks._topGoalscorer;
+                        const scorerBonus = p.breakdown['Top Goalscorer Bonus'] || 0;
+                        const scorerHtml = scorerPick ? `<div class="lb-scorer-row">
+                            <span>⚽ ${esc(scorerPick.replace(/\s*\([^)]*\)$/, ''))}</span>
+                            <span class="lb-team-pts">${scorerBonus > 0 ? '+' + scorerBonus + ' bonus' : '—'}</span>
+                        </div>` : '';
+                        drawerHtml = `<div class="lb-teams-drawer">
+                            <div class="lb-team-grid">${teamRows}</div>
+                            ${scorerHtml}
+                            <button class="lb-detail-btn" onclick="event.stopPropagation();showTeamModal('${p.key}')">Full breakdown ↗</button>
+                        </div>`;
+                    }
+                } else {
+                    drawerHtml = `<div class="lb-teams-drawer"><span style="font-size:0.82em;color:#aaa;font-style:italic">Hidden until deadline</span></div>`;
+                }
+
+                const teamCount = Object.keys(p.picks).filter(k => !k.startsWith('_')).length;
+                const hintHtml = canSee && teamCount
+                    ? `<span class="lb-expand-hint" title="Show teams">▾</span>`
+                    : '';
+
+                return `<div class="lb-row ${rankClass} ${meClass}" onclick="this.classList.toggle('lb-open')">
+                    <div class="lb-header">
+                        <div class="lb-rank">
+                            <div class="lb-medal">${medal || `<span class="lb-pos">${i + 1}</span>`}</div>
+                            ${deltaHtml}
+                        </div>
+                        <div class="lb-info">
+                            <div class="lb-name ${isMe ? 'lb-name-you' : ''}">${esc(p.displayName)}${isMe ? ' <span style="font-size:0.78em;font-weight:400;color:#64748b">(you)</span>' : ''}</div>
+                            ${hintHtml}
+                        </div>
+                        <div class="lb-right">
+                            <div>
+                                <div class="lb-pts">${locked || isMe ? p.total : '—'}</div>
+                                <div class="lb-pts-label">pts</div>
+                            </div>
+                        </div>
+                    </div>
+                    ${drawerHtml}
+                </div>`;
             }).join('');
 
-            // Save current positions so next refresh can show deltas
             savePrevPositions(scores);
         }
 
@@ -4094,8 +4325,11 @@
                     fixtureData = fData.events || [];
                     standingsData = sData.children || [];
                     fixtureFetchTime = Date.now();
-                    document.getElementById('fixFetchStatus').textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB');
-                    renderFixturesFromData();
+                    const statusEl = document.getElementById('fixFetchStatus');
+                    if (statusEl) statusEl.textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB');
+                    if (currentPage === 'fixtures') renderFixturesFromData();
+                    if (currentPage === 'results') renderResults();
+                    if (currentPage === 'leaderboard') renderLeaderboard();
                 })
                 .catch(err => {
                     document.getElementById('fixFetchStatus').textContent = 'ESPN fetch failed';
@@ -4222,49 +4456,247 @@
         // ============================================================
         // RESULTS (completed matches + standings)
         // ============================================================
-        function renderResults() {
-            // Firebase match results
-            const container = document.getElementById('resultsContainer');
-            const rounds = ['final', 'sf', 'qf', 'r16', 'group'];
-            const results = Object.entries(appData.matchResults || {});
-            if (!results.length) {
-                container.innerHTML = '<p style="color:#666;margin-top:16px">No completed matches yet.</p>';
-            } else {
-                let html = '';
-                rounds.forEach(round => {
-                    const rMatches = results.filter(([, m]) => m.round === round);
-                    if (!rMatches.length) return;
-                    html += `<h3 style="margin:20px 0 10px;color:#8B0000">${ROUND_LABELS[round]}</h3>
-        <table class="results-table"><thead><tr><th>Home</th><th>Result</th><th>Away</th><th>Round</th></tr></thead><tbody>`;
-                    rMatches.forEach(([, m]) => {
-                        const aWon = m.result === 'home'; const bWon = m.result === 'away'; const draw = m.result === 'draw';
-                        html += `<tr>
-                <td class="${aWon ? 'result-win' : ''}">${esc(m.teamA)}</td>
-                <td class="${draw ? 'result-draw' : ''}">${aWon ? '🏆 Win' : bWon ? 'Loss' : '🤝 Draw'}</td>
-                <td class="${bWon ? 'result-win' : ''}">${esc(m.teamB)}</td>
-                <td><span class="round-badge ${ROUND_CLASS[round]}">${ROUND_LABELS[round]}</span></td>
-            </tr>`;
-                    });
-                    html += '</tbody></table>';
+        function renderTopGoalscorerRace() {
+            const el = document.getElementById('topGoalscorerRaceArea');
+            if (!el) return;
+
+            const espnCompleted = (fixtureData || []).filter(e =>
+                e.competitions?.[0]?.status?.type?.completed === true
+            );
+            if (!espnCompleted.length) { el.innerHTML = ''; return; }
+
+            // Tally goals per player (exclude own goals from their tally)
+            const goalMap = {}; // shortName → { goals, team }
+            espnCompleted.forEach(e => {
+                const comp = e.competitions[0];
+                const details = comp.details || [];
+                details.filter(d => d.scoringPlay && !d.ownGoal).forEach(d => {
+                    const name = d.athletesInvolved?.[0]?.shortName;
+                    const teamName = comp.competitors.find(c => c.team.id === d.team?.id)?.team?.displayName || '';
+                    if (!name) return;
+                    if (!goalMap[name]) goalMap[name] = { goals: 0, team: teamName };
+                    goalMap[name].goals++;
                 });
+            });
+
+            if (!Object.keys(goalMap).length) { el.innerHTML = ''; return; }
+
+            // Find who each player picked as top goalscorer
+            const pickersByScorer = {}; // shortName → [displayName, ...]
+            Object.entries(appData.picks || {}).forEach(([key, picks]) => {
+                const rawScorer = picks._topGoalscorer;
+                if (!rawScorer) return;
+                // Format is "First Last (Country)" — strip country suffix
+                const scorer = rawScorer.replace(/\s*\([^)]*\)\s*$/, '').trim();
+                const scorerLastName = scorer.split(' ').pop()?.toLowerCase() || '';
+                const userRecord = appData.users?.[key];
+                const displayName = userRecord?.displayName || userRecord?.username || picks._username || key;
+                // Match ESPN shortName (e.g. "R. Jiménez") against full name last name
+                Object.keys(goalMap).forEach(shortName => {
+                    // shortName format: "F. Lastname" — extract last name
+                    const shortLast = shortName.split('. ').pop()?.toLowerCase() || shortName.toLowerCase();
+                    if (shortLast === scorerLastName || scorer.toLowerCase().includes(shortLast)) {
+                        if (!pickersByScorer[shortName]) pickersByScorer[shortName] = [];
+                        pickersByScorer[shortName].push(displayName);
+                    }
+                });
+            });
+
+            const sorted = Object.entries(goalMap).sort((a, b) => b[1].goals - a[1].goals).slice(0, 10);
+            const topGoals = sorted[0]?.[1]?.goals || 0;
+
+            const rows = sorted.map(([name, data], i) => {
+                const pickers = pickersByScorer[name] || [];
+                const isLeader = data.goals === topGoals;
+                const pickedClass = pickers.length ? 'tgr-picked' : '';
+                const pickersHtml = pickers.length
+                    ? `<div class="tgr-pickers">Picked by: ${pickers.map(n => esc(n)).join(', ')}</div>`
+                    : '';
+                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+                return `<div class="tgr-row ${pickedClass}">
+                    <div class="tgr-rank">${medal}</div>
+                    <div>
+                        <div class="tgr-player">${esc(name)}</div>
+                        <div class="tgr-team">${countryFlag(data.team)} ${esc(data.team)}</div>
+                        ${pickersHtml}
+                    </div>
+                    <div>
+                        <div class="tgr-goals">${data.goals}</div>
+                        <div class="tgr-goals-label">${data.goals === 1 ? 'goal' : 'goals'}</div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            el.innerHTML = `
+                <h3 style="font-size:0.88em;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-mid);margin:24px 0 12px">
+                    ⚽ Top Goalscorer Race
+                </h3>
+                ${rows}
+                <div style="font-size:0.75em;color:var(--text-light);margin-top:8px;margin-bottom:4px">Highlighted rows = someone picked that player as their tiebreaker</div>
+            `;
+        }
+
+        function renderResults() {
+            renderGroupStandings();
+            renderTopGoalscorerRace();
+
+            const container = document.getElementById('resultsContainer');
+            const myTeams = getMyTeams();
+
+            // Primary: ESPN fixture data for completed matches
+            const espnCompleted = (fixtureData || []).filter(e =>
+                e.competitions?.[0]?.status?.type?.completed === true
+            );
+
+            if (espnCompleted.length) {
+                // Group by day descending (most recent first)
+                const byDay = {};
+                espnCompleted.forEach(e => {
+                    const day = e.date.slice(0, 10);
+                    if (!byDay[day]) byDay[day] = [];
+                    byDay[day].push(e);
+                });
+
+                const html = Object.entries(byDay).sort(([a], [b]) => b.localeCompare(a)).map(([day, dayEvents]) => {
+                    const label = new Date(day + 'T12:00:00Z').toLocaleDateString('en-GB', {
+                        weekday: 'long', day: 'numeric', month: 'long'
+                    });
+
+                    const cards = dayEvents.map(e => {
+                        const comp = e.competitions[0];
+                        const home = comp.competitors.find(c => c.homeAway === 'home');
+                        const away = comp.competitors.find(c => c.homeAway === 'away');
+                        if (!home || !away) return '';
+
+                        const hName = home.team.displayName;
+                        const aName = away.team.displayName;
+                        const isMyH = myTeams.includes(normalizeTeam(hName));
+                        const isMyA = myTeams.includes(normalizeTeam(aName));
+                        const hScore = parseInt(home.score) || 0;
+                        const aScore = parseInt(away.score) || 0;
+                        const grp = teamGroup(hName) || teamGroup(aName);
+
+                        // Parse details: goals, cards
+                        const details = comp.details || [];
+                        const goals = details.filter(d => d.scoringPlay);
+                        const hGoals = goals.filter(d => d.team?.id === home.team.id);
+                        const aGoals = goals.filter(d => d.team?.id === away.team.id);
+
+                        const goalLine = (gs) => gs.map(g => {
+                            const name = g.athletesInvolved?.[0]?.shortName || '';
+                            const min = g.clock?.displayValue || '';
+                            const og = g.ownGoal ? ' (OG)' : '';
+                            const pen = g.penaltyKick ? ' (P)' : '';
+                            return `<span class="res-scorer">${esc(name)}${og}${pen} <span class="res-min">${min}</span></span>`;
+                        }).join('');
+
+                        const redCards = details.filter(d => d.redCard);
+                        const hReds = redCards.filter(d => d.team?.id === home.team.id);
+                        const aReds = redCards.filter(d => d.team?.id === away.team.id);
+                        const redLine = (reds) => reds.map(r => {
+                            const name = r.athletesInvolved?.[0]?.shortName || '';
+                            const min = r.clock?.displayValue || '';
+                            return `<span class="res-red">🟥 ${esc(name)} <span class="res-min">${min}</span></span>`;
+                        }).join('');
+
+                        const borderClass = (isMyH || isMyA) ? 'border-left:3px solid var(--gold);' : '';
+
+                        return `<div class="res-match-card" style="${borderClass}">
+                            <div class="res-match-meta">
+                                ${grp ? `<span class="fix-group">Grp ${grp}</span>` : ''}
+                                <span style="color:var(--text-light);font-size:0.75em">FT</span>
+                            </div>
+                            <div class="res-scoreline">
+                                <div class="res-team ${isMyH ? 'res-my-team' : ''}">
+                                    <span class="res-team-name">${countryFlag(hName)} ${esc(hName)}</span>
+                                    <div class="res-scorers">${goalLine(hGoals)}${redLine(hReds)}</div>
+                                </div>
+                                <div class="res-score-box">
+                                    <span class="${hScore > aScore ? 'res-score-win' : ''}">${hScore}</span>
+                                    <span class="res-score-sep">–</span>
+                                    <span class="${aScore > hScore ? 'res-score-win' : ''}">${aScore}</span>
+                                </div>
+                                <div class="res-team res-team-away ${isMyA ? 'res-my-team' : ''}">
+                                    <span class="res-team-name">${countryFlag(aName)} ${esc(aName)}</span>
+                                    <div class="res-scorers res-scorers-away">${goalLine(aGoals)}${redLine(aReds)}</div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }).join('');
+
+                    return `<div class="res-day-group">
+                        <div class="res-day-header">${label}</div>
+                        ${cards}
+                    </div>`;
+                }).join('');
+
                 container.innerHTML = html;
+            } else if (!fixtureData) {
+                // No ESPN data yet — trigger fetch, show spinner
+                container.innerHTML = '<p style="color:var(--text-mid);padding:10px 0">Loading results…</p>';
+                fetchEspnFixturesAndStandings();
+            } else {
+                // ESPN loaded but no completed matches yet
+                container.innerHTML = '<p style="color:#666;margin-top:16px">No completed matches yet.</p>';
             }
 
-            // Group standings from cached ESPN data (no extra fetch needed)
-            renderGroupStandings();
+            // Fallback: also show any manually-entered Firebase results not covered by ESPN
+            const espnTeamPairs = new Set(espnCompleted.map(e => {
+                const comp = e.competitions[0];
+                const h = comp.competitors.find(c => c.homeAway === 'home')?.team.displayName || '';
+                const a = comp.competitors.find(c => c.homeAway === 'away')?.team.displayName || '';
+                return normalizeTeam(h) + '|' + normalizeTeam(a);
+            }));
+            const manualOnly = Object.entries(appData.matchResults || {}).filter(([k, m]) => {
+                if (k.startsWith('espn-')) return false;
+                return !espnTeamPairs.has(normalizeTeam(m.teamA) + '|' + normalizeTeam(m.teamB));
+            });
+            if (manualOnly.length) {
+                const rounds = ['final', 'sf', 'qf', 'r16', 'group'];
+                let extra = '<h3 style="margin:24px 0 10px;font-size:0.9em;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.5px">Manually Entered Results</h3>';
+                rounds.forEach(round => {
+                    const rMatches = manualOnly.filter(([, m]) => m.round === round);
+                    if (!rMatches.length) return;
+                    rMatches.forEach(([, m]) => {
+                        const aWon = m.result === 'home'; const bWon = m.result === 'away'; const draw = m.result === 'draw';
+                        extra += `<div class="res-match-card">
+                            <div class="res-match-meta"><span class="fix-group">${ROUND_LABELS[round]}</span></div>
+                            <div class="res-scoreline">
+                                <div class="res-team ${aWon ? 'res-my-team' : ''}"><span class="res-team-name">${countryFlag(m.teamA)} ${esc(m.teamA)}</span></div>
+                                <div class="res-score-box">
+                                    <span class="${aWon ? 'res-score-win' : ''}">${m.scoreA ?? '?'}</span>
+                                    <span class="res-score-sep">–</span>
+                                    <span class="${bWon ? 'res-score-win' : ''}">${m.scoreB ?? '?'}</span>
+                                </div>
+                                <div class="res-team res-team-away ${bWon ? 'res-my-team' : ''}"><span class="res-team-name">${countryFlag(m.teamB)} ${esc(m.teamB)}</span></div>
+                            </div>
+                        </div>`;
+                    });
+                });
+                container.innerHTML += extra;
+            }
         }
 
         function renderGroupStandings() {
             const el = document.getElementById('resultsStandingsArea');
             if (!standingsData || !standingsData.length) {
-                // Trigger a fetch if we have nothing yet
+                el.innerHTML = '<p style="color:var(--text-mid);padding:10px 0">Loading standings…</p>';
                 if (!fixtureData) {
-                    el.innerHTML = '<p style="color:var(--text-mid);padding:10px 0">Loading standings…</p>';
-                    fetchEspnFixturesAndStandings(true);
+                    fetchEspnFixturesAndStandings();
+                } else {
+                    // fixtureData loaded but standings missing — fetch standings separately
+                    fetch('https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings')
+                        .then(r => r.json())
+                        .then(sData => {
+                            standingsData = sData.children || [];
+                            renderGroupStandings();
+                        })
+                        .catch(() => { el.innerHTML = ''; });
                 }
                 return;
             }
 
+            const myTeams = getMyTeams();
             const html = `
         <h3 style="font-size:0.88em;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-mid);margin-bottom:12px">
             Group Standings
@@ -4276,7 +4708,6 @@
                     const s = (e.stats || []).find(x => x.name === name);
                     return s ? (s.displayValue || Math.round(s.value)) : 0;
                 };
-                const myTeams = getMyTeams();
                 const rows = entries.map(e => {
                     const tName = e.team.displayName;
                     const isMy = myTeams.includes(normalizeTeam(tName));
@@ -4780,6 +5211,85 @@
         }
 
         function renderOracleInsight() { /* removed */ }
+
+        // ============================================================
+        // NEWS
+        // ============================================================
+        async function renderNews() {
+            const container = document.getElementById('newsContainer');
+            if (!container) return;
+            container.innerHTML = '<p style="color:#666;text-align:center;padding:24px 0">Loading news…</p>';
+
+            // --- Match recaps from fixtureData ---
+            const recaps = [];
+            (fixtureData || []).forEach(e => {
+                const comp = e.competitions?.[0];
+                if (!comp) return;
+                if (comp.status?.type?.state !== 'post') return;
+                const hl = comp.headlines?.[0];
+                if (!hl?.description) return;
+                const teams = (comp.competitors || []).map(c => c.team?.displayName || '').join(' vs ');
+                recaps.push({ teams, description: hl.description });
+            });
+
+            // --- ESPN news API ---
+            let articles = [];
+            try {
+                const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/news?limit=20');
+                const data = await res.json();
+                articles = (data.articles || []).filter(a => a.headline);
+            } catch(e) {
+                // network error — show recaps only
+            }
+
+            let html = '';
+
+            // Match recaps section
+            if (recaps.length) {
+                html += `<div class="news-recap-section">
+                    <h3 style="font-size:1em;font-weight:700;color:var(--navy);margin:0 0 10px 0">⚽ Match Recaps</h3>`;
+                recaps.slice(0, 8).forEach(r => {
+                    html += `<div class="news-recap-card">
+                        <span class="news-recap-badge">RECAP</span>
+                        <div>
+                            <div class="news-recap-text">${esc(r.teams)}</div>
+                            <div class="news-recap-desc">${esc(r.description)}</div>
+                        </div>
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+
+            // Article cards
+            if (articles.length) {
+                html += `<h3 style="font-size:1em;font-weight:700;color:var(--navy);margin:18px 0 10px 0">📰 Latest from ESPN</h3>
+                <div class="news-grid">`;
+                articles.forEach(a => {
+                    const img = a.images?.[0]?.url || '';
+                    const href = a.links?.web?.href || '#';
+                    const pub = a.published ? new Date(a.published).toLocaleDateString('en-IE', { day:'numeric', month:'short' }) : '';
+                    const type = a.type || '';
+                    html += `<a class="news-card" href="${esc(href)}" target="_blank" rel="noopener">
+                        ${img ? `<img class="news-card-img" src="${esc(img)}" alt="" loading="lazy">` : '<div class="news-card-img news-card-img-placeholder">⚽</div>'}
+                        <div class="news-card-body">
+                            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
+                                ${type ? `<span class="news-card-type">${esc(type)}</span>` : '<span></span>'}
+                                ${pub ? `<span class="news-card-footer">${pub}</span>` : ''}
+                            </div>
+                            <div class="news-card-headline">${esc(a.headline)}</div>
+                            ${a.description ? `<div class="news-card-desc">${esc(a.description)}</div>` : ''}
+                        </div>
+                    </a>`;
+                });
+                html += `</div>`;
+            }
+
+            if (!html) {
+                html = '<p style="color:#666;text-align:center;padding:24px 0">No news available right now. Check back later!</p>';
+            }
+
+            container.innerHTML = html;
+        }
 
         // ============================================================
         // HELPERS
