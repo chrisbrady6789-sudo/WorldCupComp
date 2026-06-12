@@ -4703,11 +4703,16 @@
         </h3>
         <div class="standings-grid">
             ${standingsData.map(g => {
-                const entries = (g.standings && g.standings.entries) || [];
+                const entries = [...((g.standings && g.standings.entries) || [])];
                 const getStat = (e, name) => {
                     const s = (e.stats || []).find(x => x.name === name);
                     return s ? (s.displayValue || Math.round(s.value)) : 0;
                 };
+                entries.sort((a, b) => {
+                    const ptsDiff = Number(getStat(b, 'points')) - Number(getStat(a, 'points'));
+                    if (ptsDiff !== 0) return ptsDiff;
+                    return Number(getStat(b, 'pointDifferential')) - Number(getStat(a, 'pointDifferential'));
+                });
                 const rows = entries.map(e => {
                     const tName = e.team.displayName;
                     const isMy = myTeams.includes(normalizeTeam(tName));
