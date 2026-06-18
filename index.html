@@ -2253,6 +2253,11 @@
                             <div class="pts-label">pt / goal</div>
                         </div>
                         <div class="scoring-card">
+                            <div class="stage">Last 32</div>
+                            <div class="pts">5</div>
+                            <div class="pts-label">pts / win</div>
+                        </div>
+                        <div class="scoring-card">
                             <div class="stage">Last 16</div>
                             <div class="pts">10</div>
                             <div class="pts-label">pts / win</div>
@@ -2279,7 +2284,7 @@
                         </div>
                     </div>
                     <p style="color:#64748b;font-size:0.88em;margin-top:10px">
-                        ⚠️ Knockout rounds (Last 16 onwards) have no draws — the winner goes through. Teams also earn 1
+                        ⚠️ Knockout rounds (Last 32 onwards) have no draws — the winner goes through. Teams also earn 1
                         point for every goal scored.
                     </p>
                 </div>
@@ -2288,8 +2293,8 @@
                     <h3>💡 Example</h3>
                     <p style="line-height:1.8">
                         If you picked <strong>Brazil</strong> and they win 3 group games (+12 pts), score 7 goals across
-                        those matches (+7 pts), then win the Last 16 (+10 pts) and Quarter Final (+16 pts) — that's
-                        already <strong>45 points</strong> from one team alone. Pick wisely!
+                        those matches (+7 pts), then win the Last 32 (+5 pts), Last 16 (+10 pts) and Quarter Final (+16 pts) — that's
+                        already <strong>50 points</strong> from one team alone. Pick wisely!
                     </p>
                 </div>
 
@@ -2360,6 +2365,11 @@
                             <div class="pts-label">pt / goal</div>
                         </div>
                         <div class="scoring-card">
+                            <div class="stage">Last 32</div>
+                            <div class="pts">5</div>
+                            <div class="pts-label">pts / win</div>
+                        </div>
+                        <div class="scoring-card">
                             <div class="stage">Last 16</div>
                             <div class="pts">10</div>
                             <div class="pts-label">pts / win</div>
@@ -2386,7 +2396,7 @@
                         </div>
                     </div>
                     <p style="color:#64748b;font-size:0.88em;margin-top:10px">
-                        ⚠️ Knockout rounds (Last 16 onwards) have no draws — the winner goes through. Teams also earn 1
+                        ⚠️ Knockout rounds (Last 32 onwards) have no draws — the winner goes through. Teams also earn 1
                         point for every goal scored.
                     </p>
                 </div>
@@ -2489,6 +2499,7 @@
                             <label>Round</label>
                             <select id="matchRound">
                                 <option value="group">Group Stage</option>
+                                <option value="r32">Last 32</option>
                                 <option value="r16">Last 16</option>
                                 <option value="qf">Quarter Final</option>
                                 <option value="sf">Semi Final</option>
@@ -2758,6 +2769,7 @@
 
         const ROUND_LABELS = {
             group: 'Group Stage',
+            r32: 'Last 32',
             r16: 'Last 16',
             qf: 'Quarter Final',
             sf: 'Semi Final',
@@ -2766,6 +2778,7 @@
 
         const ROUND_POINTS = {
             group: { win: 4, draw: 2, goal: 1 },
+            r32: { win: 5, goal: 1 },
             r16: { win: 10, goal: 1 },
             qf: { win: 16, goal: 1 },
             sf: { win: 20, goal: 1 },
@@ -2774,6 +2787,7 @@
 
         const ROUND_CLASS = {
             group: 'round-group',
+            r32: 'round-r16',
             r16: 'round-r16',
             qf: 'round-qf',
             sf: 'round-sf',
@@ -4165,8 +4179,9 @@
 
                         const scoreA = parseInt(home.score, 10) || 0;
                         const scoreB = parseInt(away.score, 10) || 0;
-                        const result = scoreA > scoreB ? 'home' : scoreB > scoreA ? 'away' : 'draw';
-                        const round = mapEspnRound(event.name || competition.notes?.[0]?.headline || '');
+                        const winner = home.winner === true ? 'home' : away.winner === true ? 'away' : 'draw';
+                        const result = scoreA !== scoreB ? (scoreA > scoreB ? 'home' : 'away') : winner;
+                        const round = mapEspnRound(event.season?.slug || '');
 
                         matches.push({
                             teamA: home.team.displayName,
@@ -4212,13 +4227,16 @@
             }).catch(() => { }); // Silent fail — manual results still work
         }
 
-        function mapEspnRound(eventName) {
-            const n = eventName.toLowerCase();
-            if (n.includes('final') && n.includes('semi')) return 'sf';
-            if (n.includes('quarter')) return 'qf';
-            if (n.includes('round of 16') || n.includes('last 16')) return 'r16';
-            if (n.includes('final')) return 'final';
-            return 'group';
+        function mapEspnRound(slug) {
+            switch (slug) {
+                case 'round-of-32': return 'r32';
+                case 'round-of-16': return 'r16';
+                case 'quarterfinals': return 'qf';
+                case 'semifinals': return 'sf';
+                case 'final': return 'final';
+                case '3rd-place-match': return 'sf';
+                default: return 'group';
+            }
         }
 
         function findManualMatch(teamA, teamB) {
@@ -4404,6 +4422,8 @@
                     const isMyMatch = isMyH || isMyA;
 
                     const grp = teamGroup(hName) || teamGroup(aName);
+                    const fixtureRoundSlug = e.season?.slug || '';
+                    const fixtureRoundLabel = fixtureRoundSlug !== 'group-stage' ? (ROUND_LABELS[mapEspnRound(fixtureRoundSlug)] || '') : '';
 
                     const koTime = new Date(e.date).toLocaleTimeString('en-IE', {
                         hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Dublin'
@@ -4434,7 +4454,7 @@
                                 ${hOdds}
                             </div>
                             <div class="fix-centre">
-                                <div class="fix-topbar-inner"><span class="fix-ko-time">KO ${koTime}</span>${grp ? `<span class="fix-group">Grp ${grp}</span>` : ''}</div>
+                                <div class="fix-topbar-inner"><span class="fix-ko-time">KO ${koTime}</span>${grp ? `<span class="fix-group">Grp ${grp}</span>` : fixtureRoundLabel ? `<span class="fix-group">${esc(fixtureRoundLabel)}</span>` : ''}</div>
                                 <div class="fix-score">vs</div>
                                 ${drawOdds}
                             </div>
@@ -4575,6 +4595,8 @@
                         const hScore = parseInt(home.score) || 0;
                         const aScore = parseInt(away.score) || 0;
                         const grp = teamGroup(hName) || teamGroup(aName);
+                        const roundSlug = e.season?.slug || '';
+                        const roundLabel = ROUND_LABELS[mapEspnRound(roundSlug)];
 
                         // Parse details: goals, cards
                         const details = comp.details || [];
@@ -4603,7 +4625,7 @@
 
                         return `<div class="res-match-card" style="${borderClass}">
                             <div class="res-match-meta">
-                                ${grp ? `<span class="fix-group">Grp ${grp}</span>` : ''}
+                                ${grp ? `<span class="fix-group">Grp ${grp}</span>` : roundSlug !== 'group-stage' ? `<span class="fix-group">${esc(roundLabel)}</span>` : ''}
                                 <span style="color:var(--text-light);font-size:0.75em">FT</span>
                             </div>
                             <div class="res-scoreline">
@@ -4652,7 +4674,7 @@
                 return !espnTeamPairs.has(normalizeTeam(m.teamA) + '|' + normalizeTeam(m.teamB));
             });
             if (manualOnly.length) {
-                const rounds = ['final', 'sf', 'qf', 'r16', 'group'];
+                const rounds = ['final', 'sf', 'qf', 'r16', 'r32', 'group'];
                 let extra = '<h3 style="margin:24px 0 10px;font-size:0.9em;color:var(--text-mid);text-transform:uppercase;letter-spacing:0.5px">Manually Entered Results</h3>';
                 rounds.forEach(round => {
                     const rMatches = manualOnly.filter(([, m]) => m.round === round);
