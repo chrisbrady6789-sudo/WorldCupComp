@@ -2504,6 +2504,7 @@
                                 <option value="r16">Last 16</option>
                                 <option value="qf">Quarter Final</option>
                                 <option value="sf">Semi Final</option>
+                                <option value="bronze">3rd Place</option>
                                 <option value="final">Final</option>
                             </select>
                         </div>
@@ -2798,6 +2799,7 @@
             r16: 'Last 16',
             qf: 'Quarter Final',
             sf: 'Semi Final',
+            bronze: '3rd Place',
             final: 'Final'
         };
 
@@ -2807,6 +2809,7 @@
             r16: { win: 10, goal: 1 },
             qf: { win: 16, goal: 1 },
             sf: { win: 20, goal: 1 },
+            bronze: { win: 0, goal: 1 },
             final: { win: 40, goal: 1 }
         };
 
@@ -2816,6 +2819,7 @@
             r16: 'round-r16',
             qf: 'round-qf',
             sf: 'round-sf',
+            bronze: 'round-sf',
             final: 'round-final'
         };
 
@@ -4476,7 +4480,7 @@
                 case 'quarterfinals': return 'qf';
                 case 'semifinals': return 'sf';
                 case 'final': return 'final';
-                case '3rd-place-match': return 'sf';
+                case '3rd-place-match': return 'bronze';
                 default: return 'group';
             }
         }
@@ -5766,9 +5770,9 @@
             const results = Object.values(appData.matchResults || {});
             if (!results.length) { el.innerHTML = '<p class="no-data">No results yet.</p>'; return; }
 
-            const STAGES = ['group','r32','r16','qf','sf','final'];
-            const STAGE_LABELS = { group:'Group', r32:'Last 32', r16:'Last 16', qf:'QF', sf:'SF', final:'Final' };
-            const STAGE_COLORS = { group:'#3b82f6', r32:'#8b5cf6', r16:'#f59e0b', qf:'#f97316', sf:'#ef4444', final:'#ffd700' };
+            const STAGES = ['group','r32','r16','qf','sf','bronze','final'];
+            const STAGE_LABELS = { group:'Group', r32:'Last 32', r16:'Last 16', qf:'QF', sf:'SF', bronze:'3rd Place', final:'Final' };
+            const STAGE_COLORS = { group:'#3b82f6', r32:'#8b5cf6', r16:'#f59e0b', qf:'#f97316', sf:'#ef4444', bronze:'#cd7f32', final:'#ffd700' };
 
             const playerStage = {};
             scores.forEach(p => { playerStage[p.key] = {}; STAGES.forEach(s => { playerStage[p.key][s] = 0; }); });
